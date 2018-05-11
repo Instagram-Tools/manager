@@ -13,13 +13,17 @@ from models import *
 
 @app.route('/', methods=['POST'])
 def index():
-    d = json.loads(request.data)
-    user = User(username=d.get("username"), password=d.get("password"),
-                settings=d.get("settings"), timetable=d.get("timetable"))
-    db.session.add(user)
-    db.session.commit()
+    try:
+        d = json.loads(request.data)
+        user = User(username=d.get("username"), password=d.get("password"),
+                    settings=d.get("settings"), timetable=d.get("timetable"))
+        db.session.add(user)
+        db.session.commit()
 
-    return str(User.query.all())
+        return str(User.query.all())
+    except Exception as exc:
+        return str(exc)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
