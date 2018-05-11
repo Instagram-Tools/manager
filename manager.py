@@ -17,7 +17,16 @@ def index():
         d = json.loads(request.data)
         user = User(username=d.get("username"), password=d.get("password"),
                     settings=d.get("settings"), timetable=d.get("timetable"))
-        db.session.add(user)
+
+        first = User.query.filter_by(username=user.username).first()
+        if first:
+            first.password = user.password
+            first.settings = user.settings
+            first.timetable = user.timetable
+            db.session.add(first)
+        else:
+            db.session.add(user)
+
         db.session.commit()
 
         return str(User.query.all())
