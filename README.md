@@ -1,5 +1,8 @@
 # Manager 
 
+## run via docker-compose
+    docker-compose up
+
 ## install from requirements.txt
     pip install -r requirements.txt
 

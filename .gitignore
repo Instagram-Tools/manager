@@ -95,3 +95,6 @@ ENV/
 
 # IDEA folder
 .idea/
+
+# Docker
+docker-compose.override.yml
