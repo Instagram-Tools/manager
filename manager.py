@@ -2,6 +2,7 @@ from flask import Flask
 from flask import request
 from flask_sqlalchemy import SQLAlchemy
 from config import BaseConfig
+import json
 
 app = Flask(__name__)
 app.config.from_object(BaseConfig)
@@ -12,7 +13,8 @@ from models import *
 
 @app.route('/', methods=['POST'])
 def index():
-    return request
+    d = json.loads(request.data)
+    return str(d)
 
 
 if __name__ == '__main__':
