@@ -14,8 +14,12 @@ from models import *
 @app.route('/', methods=['POST'])
 def index():
     d = json.loads(request.data)
-    return str(d)
+    user = User(username=d.get("username"), password=d.get("password"),
+                settings=d.get("settings"), timetable=d.get("timetable"))
+    db.session.add(user)
+    db.session.commit()
 
+    return str(User.query.all())
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
