@@ -20,9 +20,7 @@ def index():
         user = update_user(data)
         update_timetable(user, data)
 
-        db.session.commit()
-
-        return str(User.query.all())
+        return "updated %r" % user
     except Exception as exc:
         return str(exc)
 
