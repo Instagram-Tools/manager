@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from config import BaseConfig
 import json
 import datetime
+from util import Util
 
 app = Flask(__name__)
 app.config.from_object(BaseConfig)
@@ -71,4 +72,5 @@ def parse_datetime_prefix(line, fmt):
 
 
 if __name__ == '__main__':
+    Util().start()
     app.run(host='0.0.0.0')
