@@ -10,7 +10,7 @@ app = Flask(__name__)
 app.config.from_object(BaseConfig)
 db = SQLAlchemy(app)
 
-from models import *
+import models
 
 
 @app.route('/', methods=['POST'])
@@ -26,9 +26,9 @@ def index():
 
 
 def update_user(data):
-    user = User(username=data.get("username"), password=data.get("password"),
+    user = models.User(username=data.get("username"), password=data.get("password"),
                 settings=data.get("settings"))
-    first = User.query.filter_by(username=user.username).first()
+    first = models.User.query.filter_by(username=user.username).first()
     if first:
         first.password = user.password
         first.settings = user.settings
@@ -46,12 +46,12 @@ def update_user(data):
 def update_timetable(user, data):
     timetable = data.get("timetable", [])
     for i in range(0, len(timetable), 2):
-        timetable = TimeTable(user_id=user.id, start=parse_datetime(timetable[i]),
+        timetable = models.TimeTable(user_id=user.id, start=parse_datetime(timetable[i]),
                               end=parse_datetime(timetable[i + 1]))
         db.session.add(timetable)
     db.session.commit()
 
 
 if __name__ == '__main__':
-    Manager().start()
+    Manager(models).start()
     app.run(host='0.0.0.0')
