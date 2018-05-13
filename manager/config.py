@@ -2,6 +2,7 @@ import os
 
 
 class BaseConfig(object):
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
     SECRET_KEY = os.environ['SECRET_KEY']
     DEBUG = os.environ['DEBUG']
     DB_NAME = os.environ['DB_NAME']
