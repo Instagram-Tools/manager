@@ -3,8 +3,8 @@ from flask import request
 from flask_sqlalchemy import SQLAlchemy
 from config import BaseConfig
 import json
-import datetime
 from manager import Manager
+from time_util import parse_datetime
 
 app = Flask(__name__)
 app.config.from_object(BaseConfig)
@@ -50,23 +50,6 @@ def update_timetable(user, data):
                               end=parse_datetime(timetable[i + 1]))
         db.session.add(timetable)
     db.session.commit()
-
-
-def parse_datetime(line):
-    p = parse_datetime_prefix(str(line), '%Y-%m-%d %H:%M:%S')
-    return datetime.datetime(1, 1, day=p.isoweekday(), hour=p.hour, minute=p.minute, second=p.second)
-
-
-def parse_datetime_prefix(line, fmt):
-    try:
-        t = datetime.datetime.strptime(line, fmt)
-    except ValueError as v:
-        if len(v.args) > 0 and v.args[0].startswith('unconverted data remains: '):
-            line = line[:-(len(v.args[0]) - 26)]
-            t = datetime.datetime.strptime(line, fmt)
-        else:
-            raise
-    return t
 
 
 if __name__ == '__main__':
