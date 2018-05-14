@@ -1,6 +1,7 @@
 import threading
 import datetime
 from time_util import sleep, time_in_week
+from subprocess import Popen
 
 
 class Manager:
@@ -52,6 +53,14 @@ class Manager:
         self.db.session.add(running)
         print(str("add: " + str(running)))
         self.db.session.commit()
+
+        self.start_bot(timetable)
+
+    def start_bot(self, timetable):
+        user = self.models.User.query.filter_by(id=timetable.user_id).first()
+        self.db.session.commit()
+        return Popen(["./start_bot.sh"] +
+                     [user.username, user.password, user.settings])
 
     def clear_running(self):
         delete = self.db.session.query(self.models.Running).delete()
