@@ -19,6 +19,7 @@ class Manager:
 
     def run(self):
         print("### run")
+        self.clear_running()
 
         while sleep(1):
             now = time_in_week(datetime.datetime.now())
@@ -51,3 +52,8 @@ class Manager:
         self.db.session.add(running)
         print(str("add: " + str(running)))
         self.db.session.commit()
+
+    def clear_running(self):
+        delete = self.db.session.query(self.models.Running).delete()
+        self.db.session.commit()
+        print("### clear Entries: %r" % str(delete))
