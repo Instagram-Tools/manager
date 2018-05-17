@@ -8,6 +8,6 @@ WORKDIR /app
 COPY requirements.txt /app/requirements.txt
 RUN pip install -r requirements.txt
 
-COPY manager /app
+COPY . /app
 
 CMD python server.py
