@@ -22,7 +22,7 @@ class Manager:
         print("### run")
         self.clear_running()
 
-        while sleep(1):
+        while sleep(60):
             now = time_in_week(datetime.datetime.now())
             print(str(now))
             tts = self.models.TimeTable.query.filter(
