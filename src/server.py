@@ -52,6 +52,21 @@ def update_timetable(user, data):
     db.session.commit()
 
 
+@app.before_first_request
+def initDB():
+    import sqlalchemy
+    try:
+        for m in models.list():
+            print(str(m))
+            print(str(m.query.filter_by(id=1).first()))
+    except sqlalchemy.exc.ProgrammingError:
+        print("sqlalchemy.exc.ProgrammingError")
+        print("initDB now!")
+        import create_db
+        create_db
+        print("initDB DONE")
+
+
 if __name__ == '__main__':
     Manager(db, models).start()
     app.run(host='0.0.0.0')
