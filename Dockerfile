@@ -1,6 +1,4 @@
-FROM python:3.6-onbuild
-
-EXPOSE 5000
+FROM python:3.6
 
 WORKDIR /app
 
