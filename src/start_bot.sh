@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 
-ssh -i $PATH_TO_SSH_KEY -p $SSH_PORT docker@$IP
+docker-machine ssh $MACHINE_NAME
 
 docker stop /$1
 docker rm /$1
