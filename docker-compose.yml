@@ -36,5 +36,18 @@ services:
       - DB_USER=postgres
       - DB_PASS=postgres
 
+  web:
+    image: instagramtools/web
+    environment:
+    - PYTHONUNBUFFERED=0
+    depends_on:
+    - selenium
+    volumes:
+    - ./logs:/code/logs
+  selenium:
+    image: selenium/standalone-chrome
+    ports:
+    - 5900:5900
+
 volumes:
   db_data:
