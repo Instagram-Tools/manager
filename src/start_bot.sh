@@ -1,4 +1,6 @@
 #!/bin/sh
+echo ${SSH_KEY//**/
+} > ./id_rsa
 
 docker-machine ssh $MACHINE_NAME
 
