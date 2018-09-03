@@ -21,7 +21,6 @@ services:
       - DB_SERVICE=postgres
       - DB_PORT=5432
       - PATH_TO_SSH_KEY=tk
-      - SSH_PORT=tk
       - IP=tk
   postgres:
     restart: always
@@ -50,3 +49,4 @@ services:
 
 volumes:
   db_data:
+  log_data:

@@ -2,9 +2,12 @@
 echo ${SSH_KEY//**/
 } > ./id_rsa
 
-docker-machine ssh $MACHINE_NAME
+ssh -i ./id_rsa docker@$IP <<-"END_SSH"
 
-docker stop /$1
-docker rm /$1
+    docker stop /$1
+    docker rm /$1
 
-docker-compose run -d --name $1 -e INSTA_USER=$1 -e INSTA_PW=$2 -e ENV=$3 web
+    docker run -d --name $1 -e INSTA_USER=$1 -e INSTA_PW=$2 \
+    -e ENV=$3 -v log_data:/code/logs instagramtools/web
+
+END_SSH
