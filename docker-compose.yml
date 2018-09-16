@@ -7,7 +7,6 @@ services:
       - 5000:5000
     volumes:
       - ./src:/app
-    restart: always
     depends_on:
       - postgres
     links:
@@ -23,7 +22,6 @@ services:
       - PATH_TO_SSH_KEY=tk
       - IP=tk
   postgres:
-    restart: always
     image: postgres:latest
     volumes:
       - db_data:/var/lib/postgresql
