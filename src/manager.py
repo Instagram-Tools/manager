@@ -27,24 +27,27 @@ class Manager:
             self.initDB()
 
         while sleep(60):
-            now = time_in_week(datetime.datetime.now())
-            print(str(now))
-            tts = self.models.TimeTable.query.filter(
-                self.models.TimeTable.start <= now,
-                self.models.TimeTable.end > now,
-                # self.models.TimeTable.end < self.models.TimeTable.start,
-            ).all()
-            print(str(tts))
-            for tt in tts:
-                print("user_id: " + str(tt.user_id))
+            self.loop()
 
-                first = self.models.Running.query.filter_by(user_id=tt.user_id).first()
-                if first:
-                    if first.end < datetime.datetime.now():
-                        self.db.session.delete(first)
-                    continue
+    def loop(self):
+        now = time_in_week(datetime.datetime.now())
+        print(str(now))
+        tts = self.models.TimeTable.query.filter(
+            self.models.TimeTable.start <= now,
+            self.models.TimeTable.end > now,
+            # self.models.TimeTable.end < self.models.TimeTable.start,
+        ).all()
+        print(str(tts))
+        for tt in tts:
+            print("user_id: " + str(tt.user_id))
 
-                self.add_running(tt)
+            first = self.models.Running.query.filter_by(user_id=tt.user_id).first()
+            if first:
+                if first.end < datetime.datetime.now():
+                    self.db.session.delete(first)
+                continue
+
+            self.add_running(tt)
 
     def add_running(self, timetable):
         print("adding")
