@@ -20,11 +20,12 @@ class Manager:
 
     def run(self):
         print("### run")
+        self.initDB()
+
         try:
             self.clear_running()
         except Exception as exc:
             print(exc)
-            self.initDB()
 
         while sleep(60):
             try:
@@ -82,8 +83,9 @@ class Manager:
         try:
             for m in self.models.list():
                 print(str(m))
-                print(str(m.query.filter_by(id=1).first()))
+                print(str(m.query.filter_by(id=1).first())) # ERROR:  relation "user" does not exist at character 137
         except sqlalchemy.exc.OperationalError:
+            print("sqlalchemy.exc.OperationalError")
             print("wait before initDB()")
             sleep(5)
             self.initDB()
