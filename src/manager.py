@@ -27,7 +27,10 @@ class Manager:
             self.initDB()
 
         while sleep(60):
-            self.loop()
+            try:
+                self.loop()
+            except Exception as exc:
+                print(exc)
 
     def loop(self):
         now = time_in_week(datetime.datetime.now())
