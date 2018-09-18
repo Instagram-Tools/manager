@@ -20,7 +20,11 @@ class Manager:
 
     def run(self):
         print("### run")
-        self.clear_running()
+        try:
+            self.clear_running()
+        except Exception as exc:
+            print(exc)
+            self.initDB()
 
         while sleep(60):
             now = time_in_week(datetime.datetime.now())
@@ -66,3 +70,21 @@ class Manager:
         delete = self.db.session.query(self.models.Running).delete()
         self.db.session.commit()
         print("### clear Entries: %r" % str(delete))
+
+    def initDB(self):
+        import sqlalchemy
+        try:
+            for m in self.models.list():
+                print(str(m))
+                print(str(m.query.filter_by(id=1).first()))
+        except sqlalchemy.exc.OperationalError:
+            print("wait before initDB()")
+            sleep(5)
+            self.initDB()
+
+        except sqlalchemy.exc.ProgrammingError:
+            print("sqlalchemy.exc.ProgrammingError")
+            print("initDB now!")
+            import create_db
+            create_db
+            print("initDB DONE")
