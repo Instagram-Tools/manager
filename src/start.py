@@ -9,4 +9,4 @@ db = SQLAlchemy(app)
 
 import models
 
-Manager(db, models).start()
+Manager(db, models).run()
