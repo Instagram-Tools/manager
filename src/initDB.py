@@ -10,7 +10,7 @@ try:
         print(str(m))
         print(str(m.query.filter_by(id=1).first()))
 except:
-    print("sqlalchemy.exc.ProgrammingError")
+    print("DB ERROR")
     print("initDB now!")
     import create_db
 
