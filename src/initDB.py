@@ -9,8 +9,8 @@ try:
     for m in models.list():
         print(str(m))
         print(str(m.query.filter_by(id=1).first()))
-except:
-    print("DB ERROR")
+except Exception as e:
+    print("DB ERROR: ", e)
     print("initDB now!")
     import create_db
 
