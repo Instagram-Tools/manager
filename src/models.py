@@ -27,7 +27,7 @@ class TimeTable(db.Model):
     end = db.Column(db.DateTime(), nullable=False)
 
     def __repr__(self):
-        return '<TimeTable %r %r:%r>' % (self.user_id, str(self.start), str(self.end))
+        return '<TimeTable %r %r:%r>' % (self.account_id, str(self.start), str(self.end))
 
 
 class Running(db.Model):
@@ -39,7 +39,7 @@ class Running(db.Model):
     end = db.Column(db.DateTime(), nullable=False)
 
     def __repr__(self):
-        return '<Running %r %r:%r>' % (self.user_id, str(self.start), str(self.end))
+        return '<Running %r %r:%r>' % (self.account_id, str(self.start), str(self.end))
 
 
 def list():
