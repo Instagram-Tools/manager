@@ -19,6 +19,7 @@ class Manager:
         thread.start()
 
     def run(self):
+        sleep(60)
         print("### run")
 
         try:
