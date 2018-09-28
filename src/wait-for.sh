@@ -7,9 +7,9 @@ shift
 cmd="$@"
 
 until wget -O- "$url"; do
-  >&2 echo "URL is unavailable - sleeping"
+  >&2 echo "$url is unavailable - sleeping"
   sleep 1
 done
 
->&2 echo "URL is up - executing command"
+>&2 echo "$url is up - executing command"
 exec $cmd
