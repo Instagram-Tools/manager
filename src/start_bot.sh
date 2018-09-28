@@ -3,7 +3,7 @@ echo $SSH_KEY > ./tmp
 tr '_' '\n' < ./tmp > ./id_rsa
 rm ./tmp
 
-ssh -i ./id_rsa docker@$IP <<-"END_SSH"
+ssh -tt -i ./id_rsa docker@$IP <<-"END_SSH"
 
     docker stop /$1
     docker rm /$1
