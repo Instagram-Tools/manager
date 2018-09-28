@@ -1,6 +1,7 @@
 #!/bin/sh
-echo ${SSH_KEY//**/
-} > ./id_rsa
+echo $SSH_KEY > ./tmp
+tr '_' '\n' < ./tmp > ./id_rsa
+rm ./tmp
 
 ssh -i ./id_rsa docker@$IP <<-"END_SSH"
 
