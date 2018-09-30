@@ -1,4 +1,5 @@
 #!/bin/sh
+mkdir ~/.ssh
 echo $KNOWN_HOSTS > ~/.ssh/known_hosts
 
 echo $SSH_KEY > ./tmp
