@@ -21,9 +21,12 @@ RUN apk add --no-cache --virtual .build-deps \
                 | sort -u \
     )" \
     && apk add --virtual .rundeps $runDeps \
-    && apk add openssh \
+    && apk add curl \
     && apk del .build-deps
 
+RUN curl -L https://github.com/docker/machine/releases/download/v0.15.0/docker-machine-$(uname -s)-$(uname -m) >/tmp/docker-machine && \
+        chmod +x /tmp/docker-machine && \
+        cp /tmp/docker-machine /usr/local/bin/docker-machine
 COPY ./src .
 
 ENV PYTHONUNBUFFERED=0
