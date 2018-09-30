@@ -1,6 +1,7 @@
 #!/bin/sh
 echo $SSH_KEY > ./tmp
 tr '_' '\n' < ./tmp > ./id_rsa
+chmod 600 ./id_rsa
 rm ./tmp
 
 ssh -tt -i ./id_rsa docker@$IP <<-"END_SSH"
