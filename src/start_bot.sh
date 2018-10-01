@@ -9,6 +9,7 @@ rm ./tmp
 
 echo Manager Parameters: $@
 STR=$3
-JSON=${STR//'"'/'\"'}
+JSON=${STR//'"'/"'"}
+echo JSON: $JSON
 
 ssh -tt -i ./id_rsa docker@$IP "sh start_bot.sh $1 $2 $JSON"
