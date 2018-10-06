@@ -33,6 +33,8 @@ class Manager:
             except Exception as exc:
                 print("Exception during loop():")
                 print(exc)
+                self.db.session.rollback()
+                print("Session.rollback() Done")
 
     def loop(self):
         now = time_in_week(datetime.datetime.now())
