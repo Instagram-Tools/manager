@@ -24,12 +24,14 @@ class Manager:
         try:
             self.clear_running()
         except Exception as exc:
+            print("Exception during clear_running():")
             print(exc)
 
         while sleep(60):
             try:
                 self.loop()
             except Exception as exc:
+                print("Exception during loop():")
                 print(exc)
 
     def loop(self):
