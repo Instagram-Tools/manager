@@ -9,7 +9,8 @@
 ## reset venv
 
     rm -rf ./venv
-    python -m venv ./venv
+    python -m venv --clear ./venv
+    source venv/bin/activate
 
 ## install from requirements.txt
     pip install -r requirements.txt
