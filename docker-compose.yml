@@ -10,8 +10,10 @@ services:
       - ./src:/app
     depends_on:
       - postgres
+      - proxy-manager
     links:
       - postgres:postgres
+      - proxy-manager:proxy-manager
     environment:
       - DEBUG=True
       - SECRET_KEY=5(15ds+i2+%ik6z&!yer+ga9m=e%jcqiz_5wszg)r-z!2--b2d
@@ -22,6 +24,16 @@ services:
       - DB_PORT=5432
       - PATH_TO_SSH_KEY=tk
       - IP=tk
+
+  proxy-manager:
+    image: gott50/proxy-manager
+    ports:
+    - "60000:60000"
+    environment:
+    - DEBUG=False
+    env_file:
+    - .env/.proxy-manager.env
+
   postgres:
     image: postgres:latest
     volumes:

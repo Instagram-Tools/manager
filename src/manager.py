@@ -1,5 +1,7 @@
 import threading
 import datetime
+import requests
+
 from time_util import sleep, time_in_week
 from subprocess import Popen
 
@@ -73,8 +75,18 @@ class Manager:
     def start_bot(self, timetable):
         account = self.models.Account.query.filter_by(id=timetable.account_id).first()
         self.db.session.commit()
+        print("Settings: " + str(account.settings))
         return Popen(["./start_bot.sh"] +
-                     [account.username, account.password, account.settings])
+                     [account.settings, account.username, account.password, self.get_proxy(account.username)])
+
+    def get_proxy(self, user):
+        proxy = None
+        while not proxy:
+            try:
+                proxy = requests.get('http://proxy-manager:60000/?user=%s' % user).text
+            except requests.exceptions.ConnectionError:
+                print("waiting for user: %s" % user)
+        return proxy
 
     def clear_running(self):
         delete = self.db.session.query(self.models.Running).delete()
