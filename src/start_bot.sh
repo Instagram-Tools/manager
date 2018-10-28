@@ -8,7 +8,7 @@ chmod 600 ./id_rsa
 rm ./tmp
 
 echo Manager Parameters: $@
-STR=$3
+STR=$1
 JSON=${STR//'"'/'\"'}
 shift
 
