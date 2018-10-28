@@ -7,9 +7,14 @@ tr '_' '\n' < ./tmp > ./id_rsa
 chmod 600 ./id_rsa
 rm ./tmp
 
-echo Manager Parameters: $@
 STR=$1
 JSON=${STR//'"'/'\"'}
 shift
+
+echo './id_rsa:'
+cat ./id_rsa
+
+echo Manager JSON: $1
+echo Manager Parameters: $@
 
 ssh -tt -i ./id_rsa docker@$IP "sh start_bot.sh $JSON $@"
