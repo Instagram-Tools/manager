@@ -14,7 +14,7 @@ shift
 echo './id_rsa:'
 cat ./id_rsa
 
-echo Manager JSON: $1
+echo Manager JSON: ${JSON}
 echo Manager Parameters: $@
 
-ssh -tt -i ./id_rsa docker@$IP "sh start_bot.sh $JSON $@"
+ssh -tt -i ./id_rsa $P_USER@$IP "sh start_bot.sh $JSON $@"
