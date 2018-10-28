@@ -16,7 +16,7 @@ shift
 echo Manager JSON: $JSON3
 echo Manager Parameters: $@
 
-CMD="sh start_bot.sh $JSON3 $@"
+CMD="bash start_bot.sh $JSON3 $@"
 echo CMD: $CMD
 
 ssh -tt -i ./id_rsa $P_USER@$IP $CMD
