@@ -11,9 +11,6 @@ STR=$1
 JSON=${STR//'"'/'\"'}
 shift
 
-echo './id_rsa:'
-cat ./id_rsa
-
 echo Manager JSON: ${JSON}
 echo Manager Parameters: $@
 
