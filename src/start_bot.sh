@@ -9,9 +9,14 @@ rm ./tmp
 
 STR=$1
 JSON=${STR//'"'/'\"'}
+JSON2=${JSON//'{'/'\{'}
+JSON3=${JSON2//'}'/'\}'}
 shift
 
-echo Manager JSON: ${JSON}
+echo Manager JSON: $JSON3
 echo Manager Parameters: $@
 
-ssh -tt -i ./id_rsa $P_USER@$IP "sh start_bot.sh $JSON $@"
+CMD="sh start_bot.sh $JSON3 $@"
+echo CMD: $CMD
+
+ssh -tt -i ./id_rsa $P_USER@$IP $CMD
