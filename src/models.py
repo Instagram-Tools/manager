@@ -43,4 +43,4 @@ class Running(db.Model):
 
 
 def list():
-    return [User, TimeTable, Running]
+    return [Account, TimeTable, Running]
