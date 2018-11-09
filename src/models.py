@@ -13,6 +13,7 @@ class Account(db.Model):
     timestamp = db.Column(db.TIMESTAMP, nullable=False)
     paid = db.Column(db.Boolean, default=False)
     started = db.Column(db.Boolean, default=True)
+    credit = db.Column(db.Integer, default=0)
 
     def __repr__(self):
         return '<Account %r>' % self.username
@@ -25,6 +26,9 @@ class TimeTable(db.Model):
     account_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
     start = db.Column(db.DateTime(), nullable=False)
     end = db.Column(db.DateTime(), nullable=False)
+
+    def to_json(self):
+        return {"start": str(self.start), "end": str(self.end)}
 
     def __repr__(self):
         return '<TimeTable %r %r:%r>' % (self.account_id, str(self.start), str(self.end))
