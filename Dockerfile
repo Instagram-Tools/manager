@@ -27,4 +27,6 @@ RUN apk add --no-cache --virtual .build-deps \
 COPY ./src .
 
 ENV PYTHONUNBUFFERED=0
-CMD python start.py
+
+EXPOSE 8765
+CMD python start.py && /usr/local/bin/gunicorn -b :8765 server:app
