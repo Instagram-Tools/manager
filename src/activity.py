@@ -14,10 +14,24 @@ class Activity:
         self.models = models
 
     def is_running(self, account):
-        return 404
+        out, err, errcode = run_cmd("./is_running.sh")
+        return out
 
     def start(self, account):
         return 404
 
     def stop(self, account):
         return 404
+
+    def run_cmd(self, cmd):
+        """
+        :type cmd: str
+        :return (str, str, int)
+        """
+        process = subprocess.Popen(cmd, shell=True,
+                                   stdout=subprocess.PIPE,
+                                   stderr=subprocess.PIPE)
+        out, err = process.communicate()
+        errcode = process.returncode
+
+        return out, err, errcode
