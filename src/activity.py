@@ -21,7 +21,15 @@ class Activity:
         return 404
 
     def stop(self, account):
-        return 404
+        ac = self.models.Account.query.filter_by(username=account).first()
+        if ac:
+            ac.started = False
+            self.db.session.commit()
+
+            run_cmd("./stop_bot_sh %s" % account)
+            return 200
+
+        return "Account not found: %s" % account, 404
 
     def run_cmd(self, cmd):
         """
