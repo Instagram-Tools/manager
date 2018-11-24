@@ -2,4 +2,4 @@
 
 python initDB.py
 
-python start.py
+/usr/local/bin/gunicorn -b :$1 server:app & python start.py
