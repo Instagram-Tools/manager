@@ -16,6 +16,7 @@ activity = Activity(db=db, models=models)
 
 @app.route('/bot/<account>', methods=['GET'])
 def is_running(account):
+    app.logger.warning("GET /bot/%s" % account)
     try:
         return activity.is_running(account)
     except Exception as exc:
@@ -23,6 +24,7 @@ def is_running(account):
 
 @app.route('/bot/stop/<account>', methods=['GET'])
 def stop(account):
+    app.logger.warning("GET /bot/stop/%s" % account)
     try:
         return activity.stop(account)
     except Exception as exc:
@@ -30,6 +32,7 @@ def stop(account):
 
 @app.route('/bot/start/<account>', methods=['GET'])
 def start(account):
+    app.logger.warning("GET /bot/start/%s" % account)
     try:
         return activity.start(account)
     except Exception as exc:
