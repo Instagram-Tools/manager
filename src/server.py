@@ -11,7 +11,7 @@ db = SQLAlchemy(app)
 
 import models
 
-activity = Activity(db=db, models=models)
+activity = Activity(db=db, models=models, logger=app.logger.warning)
 
 
 @app.route('/bot/<account>', methods=['GET'])
