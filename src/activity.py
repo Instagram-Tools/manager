@@ -1,6 +1,6 @@
 import datetime
 
-from subprocess import Popen
+import subprocess
 
 
 class Activity:
@@ -26,7 +26,7 @@ class Activity:
             self.db.session.commit()
 
             print("start with Settings: " + str(account.settings))
-            Popen(["./start_bot.sh"] +
+            subprocess.Popen(["./start_bot.sh"] +
                   [ac.settings, ac.username, ac.password, self.get_proxy(ac.username)])
             return 200
 
