@@ -14,7 +14,7 @@ class Activity:
         self.models = models
 
     def is_running(self, account):
-        out, err, errcode = run_cmd("./is_running.sh %s" % account)
+        out, err, errcode = self.run_cmd("./is_running.sh %s" % account)
         out = str(out).split("\\n")
         out = out[0][2:] + out[1:-2]
         return account in out
@@ -38,7 +38,7 @@ class Activity:
             ac.started = False
             self.db.session.commit()
 
-            run_cmd("./stop_bot_sh %s" % account)
+            self.run_cmd("./stop_bot_sh %s" % account)
             return 200
 
         return "Account not found: %s" % account, 404
