@@ -18,7 +18,17 @@ class Activity:
         return out
 
     def start(self, account):
-        return 404
+        ac = self.models.Account.query.filter_by(username=account).first()
+        if ac:
+            ac.started = True
+            self.db.session.commit()
+
+            print("start with Settings: " + str(account.settings))
+            Popen(["./start_bot.sh"] +
+                  [ac.settings, ac.username, ac.password, self.get_proxy(ac.username)])
+            return 200
+
+        return "Account not found: %s" % account, 404
 
     def stop(self, account):
         ac = self.models.Account.query.filter_by(username=account).first()
