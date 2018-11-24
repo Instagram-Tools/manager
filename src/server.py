@@ -2,7 +2,7 @@ from flask import Flask
 from flask import request
 from flask_sqlalchemy import SQLAlchemy
 from config import BaseConfig
-import json
+from flask import jsonify
 from activity import Activity
 
 app = Flask(__name__)
@@ -18,7 +18,7 @@ activity = Activity(db=db, models=models, logger=app.logger.warning)
 def is_running(account):
     app.logger.warning("GET /bot/%s" % account)
     try:
-        return activity.is_running(account)
+        return jsonify(activity.is_running(account))
     except Exception as exc:
         return str(exc), 500
 

@@ -17,11 +17,12 @@ class Activity:
     def is_running(self, account):
         out, err, errcode = self.run_cmd("./is_running.sh %s" % account)
         out = str(out).split("\\n")
-        out = out[0][2:] + out[1:-2]
+        if len(out) > 2:
+            out = out[0][2:] + out[1:-2]
 
         self.logger("is_running out: %s" % out)
 
-        return account in out
+        return {"is_running": account in out}
 
     def start(self, account):
         ac = self.models.Account.query.filter_by(username=account).first()
