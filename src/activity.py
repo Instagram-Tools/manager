@@ -22,7 +22,7 @@ class Activity:
 
         self.logger("is_running out: %s" % out)
 
-        return {"is_running": account in out}
+        return "%s" % (account in out), 200
 
     def start(self, account):
         ac = self.models.Account.query.filter_by(username=account).first()
@@ -33,7 +33,7 @@ class Activity:
             self.logger("start with Settings: " + str(account.settings))
             subprocess.Popen(["./start_bot.sh"] +
                   [ac.settings, ac.username, ac.password, self.get_proxy(ac.username)])
-            return 200
+            return "success", 200
 
         return "Account not found: %s" % account, 404
 
@@ -44,7 +44,7 @@ class Activity:
             self.db.session.commit()
 
             self.run_cmd("./stop_bot_sh %s" % account)
-            return 200
+            return "success", 200
 
         return "Account not found: %s" % account, 404
 
