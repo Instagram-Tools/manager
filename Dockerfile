@@ -29,4 +29,4 @@ COPY ./src .
 ENV PYTHONUNBUFFERED=0
 
 EXPOSE 8765
-CMD python start.py && /usr/local/bin/gunicorn -b :8765 server:app
+CMD sh start.sh 8765
