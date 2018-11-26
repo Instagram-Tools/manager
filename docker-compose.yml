@@ -6,8 +6,6 @@ services:
     image: instagramtools/manager
     ports:
       - 8765:8765
-    volumes:
-      - ./src:/app
     depends_on:
       - postgres
       - proxy-manager
