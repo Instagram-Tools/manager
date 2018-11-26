@@ -16,7 +16,7 @@ class Activity:
 
     def is_running(self, account):
         out, err, errcode = self.run_cmd("./is_running.sh %s" % account)
-        self.logger("is_running() out: %s" % out)
+        self.logger("is_running(); err: %s; errcode: %s; out: %s" % (err, errcode, out))
         l = str(out).split("\\n")
         if len(l) >= 2:
             l = l[0][2:] + l[1:-2]
