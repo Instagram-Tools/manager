@@ -25,7 +25,10 @@ class Activity:
             l = l[0][2:] + l[1:-2]
         self.logger("is_running(%s) l: %s" % (account, l))
 
-        return "%s" % (account in out), 200
+        for e in l:
+            if account in str(e):
+                return str(True), 200
+        return str(False), 200
 
     def start(self, account):
         ac = self.models.Account.query.filter_by(username=account).first()
