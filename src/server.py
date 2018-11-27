@@ -11,7 +11,10 @@ activity = Activity(db=db, models=appmod, logger=app.logger.warning)
 def is_running(account):
     app.logger.warning("GET /bot/%s" % account)
     try:
-        return activity.is_running(account)
+        if account:
+            return activity.is_running(account)
+        else:
+            return "Not found: %s" % account, 501  # Not; Implemented
     except Exception as exc:
         return str(exc), 500
 
