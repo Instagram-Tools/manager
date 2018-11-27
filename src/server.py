@@ -14,8 +14,10 @@ def is_running(account):
         if account:
             return activity.is_running(account)
         else:
-            return "Not found: %s" % account, 501  # Not; Implemented
+            app.logger.error("GET /bot/%s return: 501" % account)
+            return "Not found: %s" % account, 501  # Not Implemented
     except Exception as exc:
+        app.logger.error("GET /bot/%s Exception: %s" % (account, exc))
         return str(exc), 500
 
 
@@ -25,6 +27,7 @@ def stop(account):
     try:
         return activity.stop(account)
     except Exception as exc:
+        app.logger.error("GET /bot/%s Exception: %s" % (account, exc))
         return str(exc), 500
 
 
@@ -34,6 +37,7 @@ def start(account):
     try:
         return activity.start(account)
     except Exception as exc:
+        app.logger.error("GET /bot/%s Exception: %s" % (account, exc))
         return str(exc), 500
 
 
