@@ -83,9 +83,9 @@ class Manager:
         proxy = None
         while not proxy:
             try:
-                proxy = requests.get('http://proxy-manager:60000/?user=%s' % user).text
+                proxy = requests.get('http://proxy-manager:60000/%s' % user).text
             except requests.exceptions.ConnectionError:
-                print("waiting for user: %s" % user)
+                print("waiting for Proxy of user: %s" % user)
         return proxy
 
     def clear_running(self):
