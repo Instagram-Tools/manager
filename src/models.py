@@ -1,4 +1,4 @@
-from server import db
+from settings import db
 
 
 class Account(db.Model):

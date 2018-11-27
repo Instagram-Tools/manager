@@ -1,16 +1,10 @@
-from flask import Flask
 from flask import request
-from flask_sqlalchemy import SQLAlchemy
-from config import BaseConfig
+
+import models as appmod
 from activity import Activity
+from settings import db, app
 
-app = Flask(__name__)
-app.config.from_object(BaseConfig)
-db = SQLAlchemy(app)
-
-import models
-
-activity = Activity(db=db, models=models, logger=app.logger.warning)
+activity = Activity(db=db, models=appmod, logger=app.logger.warning)
 
 
 @app.route('/bot/<account>', methods=['GET'])
@@ -21,6 +15,7 @@ def is_running(account):
     except Exception as exc:
         return str(exc), 500
 
+
 @app.route('/bot/stop/<account>', methods=['GET'])
 def stop(account):
     app.logger.warning("GET /bot/stop/%s" % account)
@@ -28,6 +23,7 @@ def stop(account):
         return activity.stop(account)
     except Exception as exc:
         return str(exc), 500
+
 
 @app.route('/bot/start/<account>', methods=['GET'])
 def start(account):
