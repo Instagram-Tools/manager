@@ -75,7 +75,7 @@ class Manager:
     def start_bot(self, timetable):
         account = self.models.Account.query.filter_by(id=timetable.account_id).first()
         self.db.session.commit()
-        print("Settings: " + str(account.settings))
+        print("Settings: " + json.dumps(str(account.settings)).split(" "))
         return Popen(["./start_bot.sh"] +
                      [account.settings, account.username, account.password, self.get_proxy(account.username)])
 
