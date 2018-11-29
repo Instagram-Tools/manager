@@ -26,6 +26,8 @@ RUN apk add --no-cache --virtual .build-deps \
 
 COPY ./src .
 
+RUN mkdir ~/.ssh
+
 ENV PYTHONUNBUFFERED=0
 
 EXPOSE 8765
