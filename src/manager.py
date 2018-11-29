@@ -1,6 +1,7 @@
 import threading
 import datetime
 import requests
+import json
 
 from time_util import sleep, time_in_week
 from subprocess import Popen
@@ -75,9 +76,10 @@ class Manager:
     def start_bot(self, timetable):
         account = self.models.Account.query.filter_by(id=timetable.account_id).first()
         self.db.session.commit()
-        print("Settings: " + json.dumps(str(account.settings)).split(" "))
+        settings_split_json = json.dumps(str(account.settings)).split(" ")
+        print("Settings: %s" % settings_split_json)
         return Popen(["./start_bot.sh"] +
-                     [account.settings, account.username, account.password, self.get_proxy(account.username)])
+                     [settings_split_json, account.username, account.password, self.get_proxy(account.username)])
 
     def get_proxy(self, user):
         proxy = None
