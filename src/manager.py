@@ -98,7 +98,7 @@ class Manager:
     def check_proxy(self, proxy):
         try:
             print('check_proxy(%s)' % proxy)
-            requests.get('http://example.com', proxies={'http': '%s:%s' % (proxy, PORT)})
+            requests.get('http://example.com', proxies={'http': proxy})
         except IOError:
             return False
         else:
