@@ -92,12 +92,12 @@ class Manager:
             except requests.exceptions.ConnectionError:
                 print("retry: get Proxy for user: %s" % user)
                 sleep(10)
-        self.logger.waring("use Proxy: %s for User: %s" % (proxy, user))
+        print("use Proxy: %s for User: %s" % (proxy, user))
         return proxy
 
     def check_proxy(self, proxy):
         try:
-            self.logger.debug('check_proxy(%s)' % proxy)
+            print('check_proxy(%s)' % proxy)
             requests.get('http://example.com', proxies={'http': '%s:%s' % (proxy, PORT)})
         except IOError:
             return False
