@@ -89,10 +89,10 @@ class Manager:
                 while not self.check_proxy(proxy=proxy):
                     print("waiting for Proxy of user: %s" % user)
                     sleep(10)
-
             except requests.exceptions.ConnectionError:
                 print("retry: get Proxy for user: %s" % user)
                 sleep(10)
+        self.logger.waring("use Proxy: %s for User: %s" % (proxy, user))
         return proxy
 
     def check_proxy(self, proxy):
