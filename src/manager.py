@@ -86,10 +86,23 @@ class Manager:
         while not proxy:
             try:
                 proxy = requests.get('http://proxy-manager:60000/%s' % user).text
+                while not self.check_proxy(proxy=proxy):
+                    print("waiting for Proxy of user: %s" % user)
+                    sleep(10)
+
             except requests.exceptions.ConnectionError:
-                print("waiting for user: %s" % user)
+                print("retry: get Proxy for user: %s" % user)
                 sleep(10)
         return proxy
+
+    def check_proxy(self, proxy):
+        try:
+            self.logger.debug('check_proxy(%s)' % proxy)
+            requests.get('http://example.com', proxies={'http': '%s:%s' % (proxy, PORT)})
+        except IOError:
+            return False
+        else:
+            return True
 
     def clear_running(self):
         delete = self.db.session.query(self.models.Running).delete()
