@@ -4,7 +4,7 @@ import subprocess
 
 
 class Activity:
-    def __init__(self, db, models, logger=print):
+    def __init__(self, db, models, logger):
         """
 
         :type db: flask_sqlalchemy.SQLAlchemy
@@ -16,11 +16,11 @@ class Activity:
 
     def is_running(self, account):
         out, err, errcode = self.run_cmd("./is_running.sh %s" % account)
-        self.logger("is_running(%s); err: %s; errcode: %s; out: %s" % (account, err, errcode, out))
+        self.logger.warning("is_running(%s); err: %s; errcode: %s; out: %s" % (account, err, errcode, out))
         s = out.decode('utf_8')
-        self.logger("is_running(%s); s: %s" % (account, s))
+        self.logger.info("is_running(%s); s: %s" % (account, s))
         l = s.split("\\n")
-        self.logger("is_running(%s) l: %s" % (account, l))
+        self.logger.info("is_running(%s) l: %s" % (account, l))
 
         for e in l:
             if account in str(e):
@@ -33,7 +33,7 @@ class Activity:
             ac.started = True
             self.db.session.commit()
 
-            self.logger("start with Settings: " + str(account.settings))
+            self.logger.info("start with Settings: " + str(account.settings))
             subprocess.Popen(["./start_bot.sh"] +
                   [ac.settings, ac.username, ac.password, self.get_proxy(ac.username)])
             return "success", 200
