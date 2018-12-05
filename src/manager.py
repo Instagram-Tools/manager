@@ -85,15 +85,19 @@ class Manager:
         proxy = None
         while not proxy:
             try:
-                proxy = requests.get('http://proxy-manager:60000/%s' % user).text
+                proxy = self.get_proxy_manager(user)
                 while not self.check_proxy(proxy=proxy):
                     print("waiting for Proxy of user: %s" % user)
                     sleep(10)
+                    proxy = self.get_proxy_manager(user)
             except requests.exceptions.ConnectionError:
                 print("retry: get Proxy for user: %s" % user)
                 sleep(10)
         print("use Proxy: %s for User: %s" % (proxy, user))
         return proxy
+
+    def get_proxy_manager(self, user):
+        return requests.get('http://proxy-manager:60000/%s' % user).text
 
     def check_proxy(self, proxy):
         try:
