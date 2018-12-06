@@ -79,44 +79,7 @@ class Manager:
         settings_split_json = json.dumps(str(account.settings).split(" "))
         print("Settings: %s" % settings_split_json)
         return Popen(["./start_bot.sh"] +
-                     [settings_split_json, account.username, account.password, self.get_proxy(account.username)])
-
-    def get_proxy(self, user):
-        proxy = None
-        while not proxy:
-            try:
-                proxy = self.get_proxy_manager(user)
-                proxy = self.create_proxy(user=user, proxy=proxy)
-            except requests.exceptions.ConnectionError:
-                print("retry: get Proxy for user: %s" % user)
-                sleep(10)
-        print("use Proxy: %s for User: %s" % (proxy, user))
-        return proxy
-
-    def create_proxy(self, user, proxy):
-        for i in range(20):
-            if self.check_proxy(proxy=proxy):
-                return proxy
-            print("%s: waiting for Proxy of user: %s" % (i, user))
-            sleep(10)
-            proxy = self.get_proxy_manager(user)
-
-        return self.create_proxy(user=user, proxy=self.restart_proxy_manager(user=user))
-
-    def get_proxy_manager(self, user):
-        return requests.get('http://proxy-manager:60000/%s' % user).text
-
-    def restart_proxy_manager(self, user):
-        return requests.get('http://proxy-manager:60000/restart/%s' % user).text
-
-    def check_proxy(self, proxy):
-        try:
-            print('check_proxy(%s)' % proxy)
-            requests.get('http://example.com', proxies={'http': proxy})
-        except IOError:
-            return False
-        else:
-            return True
+                     [settings_split_json, account.username, account.password])
 
     def clear_running(self):
         delete = self.db.session.query(self.models.Running).delete()
