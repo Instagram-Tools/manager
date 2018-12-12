@@ -1,7 +1,6 @@
 import threading
 import datetime
 import requests
-import json
 
 from time_util import sleep, time_in_week
 from subprocess import Popen
