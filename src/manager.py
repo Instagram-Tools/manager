@@ -52,7 +52,7 @@ class Manager:
         ).all()
         print(str(tts))
         for tt in tts:
-            print("account_id: " + str(tt.account_id))
+            print("account_id: %s" % tt.account_id)
             self.activity.start_bot(tt)
 
     def clear_running(self):
