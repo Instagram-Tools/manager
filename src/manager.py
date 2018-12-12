@@ -3,7 +3,6 @@ import datetime
 import requests
 
 from time_util import sleep, time_in_week
-from subprocess import Popen
 
 from activity import Activity
 import logging

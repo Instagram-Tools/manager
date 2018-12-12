@@ -49,7 +49,7 @@ class Activity:
     def start_account(self, account):
         settings_split_json = json.dumps(str(account.settings).split(" "))
         print("Settings: %s" % settings_split_json)
-        return Popen(["./start_bot.sh"] +
+        return subprocess.Popen(["./start_bot.sh"] +
                      [settings_split_json, account.username, account.password])
 
     def stop(self, account):
