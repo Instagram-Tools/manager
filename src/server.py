@@ -12,7 +12,7 @@ def is_running(account):
     app.logger.info("GET /bot/%s" % account)
     try:
         if account:
-            return activity.is_running(account)
+            return str(activity.is_running(account)), 200
         else:
             app.logger.error("GET /bot/%s return: 501" % account)
             return "Not found: %s" % account, 501  # Not Implemented

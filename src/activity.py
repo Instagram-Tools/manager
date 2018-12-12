@@ -24,8 +24,8 @@ class Activity:
 
         for e in l:
             if account in str(e):
-                return str(True), 200
-        return str(False), 200
+                return True
+        return False
 
     def start(self, account):
         ac = self.models.Account.query.filter_by(username=account).first()
@@ -42,7 +42,8 @@ class Activity:
     def start_bot(self, timetable):
         account = self.models.Account.query.filter_by(id=timetable.account_id).first()
         self.db.session.commit()
-        return self.start_account(account=account)
+        if not self.is_running(account=account):
+            return self.start_account(account=account)
 
     def start_account(self, account):
         settings_split_json = json.dumps(str(account.settings).split(" "))

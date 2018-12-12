@@ -52,28 +52,7 @@ class Manager:
         print(str(tts))
         for tt in tts:
             print("account_id: " + str(tt.account_id))
-
-            first = self.models.Running.query.filter_by(account_id=tt.account_id).first()
-            if first:
-                if first.end < datetime.datetime.now():
-                    self.db.session.delete(first)
-                continue
-
-            self.add_running(tt)
-
-    def add_running(self, timetable):
-        print("adding")
-        timedelta = datetime.timedelta(days=timetable.end.day - timetable.start.day,
-                                       hours=timetable.end.hour - timetable.start.hour,
-                                       minutes=timetable.end.minute - timetable.start.minute,
-                                       seconds=timetable.end.second - timetable.start.second)
-        running = self.models.Running(account_id=timetable.account_id, start=datetime.datetime.now(),
-                                      end=(datetime.datetime.now() + abs(timedelta)))
-        self.db.session.add(running)
-        print(str("add: " + str(running)))
-        self.db.session.commit()
-
-        self.activity.start_bot(timetable)
+            self.activity.start_bot(tt)
 
     def clear_running(self):
         delete = self.db.session.query(self.models.Running).delete()
