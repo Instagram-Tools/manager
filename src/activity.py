@@ -34,11 +34,21 @@ class Activity:
             self.db.session.commit()
 
             self.logger.info("start with Settings: " + str(account.settings))
-            subprocess.Popen(["./start_bot.sh"] +
-                  [ac.settings, ac.username, ac.password, self.get_proxy(ac.username)])
+            self.start_account(account=account)
             return "success", 200
 
         return "Account not found: %s" % account, 404
+
+    def start_bot(self, timetable):
+        account = self.models.Account.query.filter_by(id=timetable.account_id).first()
+        self.db.session.commit()
+        return self.start_account(account=account)
+
+    def start_account(self, account):
+        settings_split_json = json.dumps(str(account.settings).split(" "))
+        print("Settings: %s" % settings_split_json)
+        return Popen(["./start_bot.sh"] +
+                     [settings_split_json, account.username, account.password])
 
     def stop(self, account):
         ac = self.models.Account.query.filter_by(username=account).first()

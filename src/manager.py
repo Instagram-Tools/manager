@@ -6,6 +6,7 @@ import json
 from time_util import sleep, time_in_week
 from subprocess import Popen
 
+import logging
 
 class Manager:
     def __init__(self, db, models):
@@ -16,6 +17,7 @@ class Manager:
         """
         self.db = db
         self.models = models
+        self.activity = Activity(db=db, models=models, logger=logging)
 
     def start(self):
         thread = threading.Thread(target=self.run)
@@ -71,15 +73,7 @@ class Manager:
         print(str("add: " + str(running)))
         self.db.session.commit()
 
-        self.start_bot(timetable)
-
-    def start_bot(self, timetable):
-        account = self.models.Account.query.filter_by(id=timetable.account_id).first()
-        self.db.session.commit()
-        settings_split_json = json.dumps(str(account.settings).split(" "))
-        print("Settings: %s" % settings_split_json)
-        return Popen(["./start_bot.sh"] +
-                     [settings_split_json, account.username, account.password])
+        self.activity.start_bot(timetable)
 
     def clear_running(self):
         delete = self.db.session.query(self.models.Running).delete()
