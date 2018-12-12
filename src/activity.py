@@ -42,7 +42,7 @@ class Activity:
     def start_bot(self, timetable):
         account = self.models.Account.query.filter_by(id=timetable.account_id).first()
         self.db.session.commit()
-        if not self.is_running(account=account):
+        if not self.is_running(account=account.username):
             return self.start_account(account=account)
 
     def start_account(self, account):
