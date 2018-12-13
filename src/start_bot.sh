@@ -4,6 +4,9 @@ tr '_' '\n' < ./tmp > ./id_rsa
 chmod 600 ./id_rsa
 rm ./tmp
 
+IP=$1
+shift
+
 JSON=$1
 shift
 

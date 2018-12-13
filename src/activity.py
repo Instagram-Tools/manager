@@ -2,7 +2,7 @@ import datetime
 import json
 
 import subprocess
-
+from AWSProxy import AWSProxy
 
 class Activity:
     def __init__(self, db, models, logger):
@@ -14,6 +14,7 @@ class Activity:
         self.logger = logger
         self.db = db
         self.models = models
+        self.aws = AWSProxy(logger)
 
     def is_running(self, account):
         out, err, errcode = self.run_cmd("./is_running.sh %s" % account)
@@ -48,10 +49,13 @@ class Activity:
 
     def start_account(self, account):
         if account.paid and account.started:
+
+            ip = self.aws.start(user=account.username)
+
             settings_split_json = json.dumps(str(account.settings).split(" "))
             print("Settings: %s" % settings_split_json)
             return subprocess.Popen(["./start_bot.sh"] +
-                                    [settings_split_json, account.username, account.password])
+                                    [ip, settings_split_json, account.username, account.password])
         else:
             return "not started Account: %s; paid: %s ; started: %s" % (account, account.paid, account.started)
 
