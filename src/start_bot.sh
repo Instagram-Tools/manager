@@ -1,6 +1,4 @@
 #!/bin/sh
-echo $KNOWN_HOSTS > ~/.ssh/known_hosts
-
 echo $SSH_KEY > ./tmp
 tr '_' '\n' < ./tmp > ./id_rsa
 chmod 600 ./id_rsa
@@ -15,4 +13,4 @@ echo Manager Parameters: $@
 CMD="bash start_bot.sh '$JSON' $@"
 echo Manager CMD: $CMD
 
-ssh -tt -i ./id_rsa $P_USER@$IP "bash start_bot.sh '$JSON' $@"
+ssh -o StrictHostKeychecking=no -tt -i ./id_rsa $P_USER@$IP "bash start_bot.sh '$JSON' $@"
