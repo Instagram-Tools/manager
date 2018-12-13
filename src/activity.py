@@ -47,10 +47,13 @@ class Activity:
             return self.start_account(account=account)
 
     def start_account(self, account):
-        settings_split_json = json.dumps(str(account.settings).split(" "))
-        print("Settings: %s" % settings_split_json)
-        return subprocess.Popen(["./start_bot.sh"] +
-                     [settings_split_json, account.username, account.password])
+        if account.paid and account.started:
+            settings_split_json = json.dumps(str(account.settings).split(" "))
+            print("Settings: %s" % settings_split_json)
+            return subprocess.Popen(["./start_bot.sh"] +
+                                    [settings_split_json, account.username, account.password])
+        else:
+            return "not started Account: %s; paid: %s ; started: %s" % (account, account.paid, account.started)
 
     def stop(self, account):
         ac = self.models.Account.query.filter_by(username=account).first()

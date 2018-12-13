@@ -51,7 +51,7 @@ class Manager:
         print(str(tts))
         for tt in tts:
             print("account_id: %s" % tt.account_id)
-            self.activity.start_bot(tt)
+            print(self.activity.start_bot(tt))
 
     def clear_running(self):
         delete = self.db.session.query(self.models.Running).delete()
