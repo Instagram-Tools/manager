@@ -41,6 +41,7 @@ class AWSProxy:
         while instance.state['Name'] == 'pending':
             sleep(10)
             self.logger.warning("wait while pending %s" % instance)
+            instance = self.ec2.Instance(instance.id)
 
         return instance
 
