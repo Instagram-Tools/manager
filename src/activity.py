@@ -17,21 +17,21 @@ class Activity:
         self.models = models
         self.aws = AWSProxy(logger)
 
-    def is_running(self, account):
-        ip = self.aws.get_ip(user=account.username)
+    def is_running(self, username):
+        ip = self.aws.get_ip(user=username)
 
         if not ip:
             return False
 
-        out, err, errcode = self.run_cmd("./is_running.sh %s %s" % (ip, account))
-        self.logger.warning("is_running(%s); err: %s; errcode: %s; out: %s" % (account, err, errcode, out))
+        out, err, errcode = self.run_cmd("./is_running.sh %s %s" % (ip, username))
+        self.logger.warning("is_running(%s); err: %s; errcode: %s; out: %s" % (username, err, errcode, out))
         s = out.decode('utf_8')
-        self.logger.info("is_running(%s); s: %s" % (account, s))
+        self.logger.info("is_running(%s); s: %s" % (username, s))
         l = s.split("\\n")
-        self.logger.info("is_running(%s) l: %s" % (account, l))
+        self.logger.info("is_running(%s) l: %s" % (username, l))
 
         for e in l:
-            if account in str(e):
+            if username in str(e):
                 return True
         return False
 
@@ -50,7 +50,7 @@ class Activity:
     def start_bot(self, timetable):
         account = self.models.Account.query.filter_by(id=timetable.account_id).first()
         self.db.session.commit()
-        if not self.is_running(account=account.username):
+        if not self.is_running(username=account.username):
             return self.start_account(account=account)
 
     def start_account(self, account):

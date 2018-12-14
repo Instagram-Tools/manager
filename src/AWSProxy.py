@@ -47,4 +47,25 @@ class AWSProxy:
         return instance
 
     def get_ip(self, user):
-        return None
+        instance_list = self.get_user_instance_list(user=user)
+        if len(instance_list) <= 0:
+            return None
+        return instance_list[0].public_ip_address
+
+    def get_user_instance_list(self, user):
+        d = {'Key': 'Name', 'Value': user}
+        return list(
+            filter(lambda i: (i.state['Name'] == 'pending' or i.state['Name'] == 'running') and d in i.tags,
+                   self.get_instances()))
+
+    def get_instances(self):
+        response = self.client.describe_instances(Filters=[
+            {
+                'Name': 'image-id',
+                'Values': [
+                    IMAGE_ID,
+                ]
+            },
+        ], )
+        ids = list(map(lambda i: i['Instances'][0]['InstanceId'], response['Reservations']))
+        return list(map(lambda i: self.ec2.Instance(i), ids))
