@@ -21,3 +21,6 @@ CMD="sudo docker run -d -v ~/logs:/code/logs --net=bridge --link selenium:seleni
 echo Composition CMD: $CMD
 
 $CMD
+
+echo Start stopped_shutdown.sh
+nohup sudo bash ./stopped_shutdown.sh
