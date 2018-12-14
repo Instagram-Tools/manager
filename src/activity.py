@@ -74,7 +74,7 @@ class Activity:
             ac.started = False
             self.db.session.commit()
 
-            self.run_cmd("./stop_bot_sh %s" % account)
+            self.aws.stop(account)
             return "success", 200
 
         return "Account not found: %s" % account, 404

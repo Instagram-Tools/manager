@@ -39,6 +39,12 @@ class AWSProxy:
 
         return self.wait_for_instance(instance).public_ip_address
 
+    def stop(self, user):
+        not_terminated_instances = list(
+            filter(lambda i: i.state['Name'] != 'terminated', self.get_user_instance_list(user=user)))
+        for instance in not_terminated_instances:
+            instance.stop()
+
     def wait_for_instance(self, instance):
         while not instance.public_ip_address:
             sleep(10)
