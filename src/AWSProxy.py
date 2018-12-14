@@ -34,13 +34,13 @@ class AWSProxy:
 
     def wait_for_instance(self, instance):
         while not instance.public_ip_address:
-            sleep(1)
+            sleep(10)
+            self.logger.warning("wait for public_ip_address: %s" % instance)
             instance = self.ec2.Instance(instance.id)
-            self.logger.info("wait for public_ip_address: %s" % instance)
 
         while instance.state['Name'] == 'pending':
-            sleep(1)
-            self.logger.info("wait while pending %s" % instance)
+            sleep(10)
+            self.logger.warning("wait while pending %s" % instance)
 
         return instance
 

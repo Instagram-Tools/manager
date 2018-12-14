@@ -52,6 +52,7 @@ class Activity:
         if account.paid and account.started:
 
             ip = self.aws.start(user=account.username)
+            self.logger.warning("start_bot for %s at ip: %s" % (account.username, ip))
 
             sleep(120)
 
