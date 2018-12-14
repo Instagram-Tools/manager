@@ -4,6 +4,7 @@ from time import sleep
 
 IMAGE_ID = os.environ.get('IMAGE_ID')
 
+
 class AWSProxy:
     def __init__(self, logger):
         self.logger = logger
@@ -45,3 +46,5 @@ class AWSProxy:
 
         return instance
 
+    def get_ip(self, user):
+        return None

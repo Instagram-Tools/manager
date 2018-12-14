@@ -18,7 +18,12 @@ class Activity:
         self.aws = AWSProxy(logger)
 
     def is_running(self, account):
-        out, err, errcode = self.run_cmd("./is_running.sh %s" % account)
+        ip = self.aws.get_ip(user=account.username)
+
+        if not ip:
+            return False
+
+        out, err, errcode = self.run_cmd("./is_running.sh %s %s" % (ip, account))
         self.logger.warning("is_running(%s); err: %s; errcode: %s; out: %s" % (account, err, errcode, out))
         s = out.decode('utf_8')
         self.logger.info("is_running(%s); s: %s" % (account, s))

@@ -5,6 +5,9 @@ tr '_' '\n' < ./tmp > ./id_rsa
 chmod 600 ./id_rsa
 rm ./tmp
 
+IP=$1
+shift
+
 CMD="sudo docker ps --format 'table {{.Names}}' -f STATUS=running -f NAME=$1 | grep -w $1"
 # echo CMD: $CMD
 
