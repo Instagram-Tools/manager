@@ -53,7 +53,7 @@ class Activity:
 
             ip = self.aws.start(user=account.username)
 
-            sleep(30)
+            sleep(120)
 
             settings_split_json = json.dumps(str(account.settings).split(" "))
             print("Settings: %s" % settings_split_json)
