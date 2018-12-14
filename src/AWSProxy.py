@@ -14,22 +14,28 @@ class AWSProxy:
                                    aws_secret_access_key=os.environ.get('AWS_SECRET_ACCESS_KEY'))
 
     def start(self, user):
-        instance = self.ec2.create_instances(
-            ImageId=IMAGE_ID, InstanceType='t2.micro',
-            KeyName='bot', SecurityGroups=['bot'],
-            MaxCount=1, MinCount=1,
-            TagSpecifications=[
-                {
-                    'ResourceType': 'instance',
-                    'Tags': [
-                        {
-                            'Key': 'Name',
-                            'Value': user
-                        },
-                    ]
-                },
-            ],
-        )[0]
+        not_terminated_instances = list(filter(lambda i: i.state['Name'] != 'terminated', self.get_user_instance_list(user=user)))
+        if len(not_terminated_instances) >= 1:
+            instance = not_terminated_instances[0]
+            instance.start()
+
+        else:
+            instance = self.ec2.create_instances(
+                ImageId=IMAGE_ID, InstanceType='t2.micro',
+                KeyName='bot', SecurityGroups=['bot'],
+                MaxCount=1, MinCount=1,
+                TagSpecifications=[
+                    {
+                        'ResourceType': 'instance',
+                        'Tags': [
+                            {
+                                'Key': 'Name',
+                                'Value': user
+                            },
+                        ]
+                    },
+                ],
+            )[0]
 
         return self.wait_for_instance(instance).public_ip_address
 
