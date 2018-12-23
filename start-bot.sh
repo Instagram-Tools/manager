@@ -2,6 +2,8 @@
 
 sudo service docker start
 
+sudo docker pull instagramtools/web
+
 sudo docker rm /selenium
 sudo docker run -d --net=bridge --name selenium selenium/standalone-chrome:3.141.59
 
