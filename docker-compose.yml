@@ -8,10 +8,8 @@ services:
       - 8765:8765
     depends_on:
       - postgres
-      - proxy-manager
     links:
       - postgres:postgres
-      - proxy-manager:proxy-manager
     environment:
       - DEBUG=True
       - P_USER=docker
@@ -21,15 +19,8 @@ services:
       - DB_PASS=postgres
       - DB_SERVICE=postgres
       - DB_PORT=5432
-
-  proxy-manager:
-    image: gott50/proxy-manager
-    ports:
-    - "60000:60000"
-    environment:
-    - DEBUG=False
     env_file:
-    - .env/.proxy-manager.env
+      - .env/.bot-manager.env
 
   postgres:
     image: postgres:latest

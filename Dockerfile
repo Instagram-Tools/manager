@@ -25,8 +25,7 @@ RUN apk add --no-cache --virtual .build-deps \
     && apk del .build-deps
 
 COPY ./src .
-
-RUN mkdir ~/.ssh
+COPY ./.aws /root/.aws
 
 ENV PYTHONUNBUFFERED=0
 

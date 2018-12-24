@@ -1,10 +1,12 @@
 import datetime
+import json
+from time import sleep
 
 import subprocess
-
+from AWSProxy import AWSProxy
 
 class Activity:
-    def __init__(self, db, models, logger=print):
+    def __init__(self, db, models, logger):
         """
 
         :type db: flask_sqlalchemy.SQLAlchemy
@@ -13,19 +15,25 @@ class Activity:
         self.logger = logger
         self.db = db
         self.models = models
+        self.aws = AWSProxy(logger)
 
-    def is_running(self, account):
-        out, err, errcode = self.run_cmd("./is_running.sh %s" % account)
-        self.logger("is_running(%s); err: %s; errcode: %s; out: %s" % (account, err, errcode, out))
+    def is_running(self, username):
+        ip = self.aws.get_ip(user=username)
+
+        if not ip:
+            return False
+
+        out, err, errcode = self.run_cmd("./is_running.sh %s %s" % (ip, username))
+        self.logger.warning("is_running(%s); err: %s; errcode: %s; out: %s" % (username, err, errcode, out))
         s = out.decode('utf_8')
-        self.logger("is_running(%s); s: %s" % (account, s))
+        self.logger.info("is_running(%s); s: %s" % (username, s))
         l = s.split("\\n")
-        self.logger("is_running(%s) l: %s" % (account, l))
+        self.logger.info("is_running(%s) l: %s" % (username, l))
 
         for e in l:
-            if account in str(e):
-                return str(True), 200
-        return str(False), 200
+            if username in str(e):
+                return True
+        return False
 
     def start(self, account):
         ac = self.models.Account.query.filter_by(username=account).first()
@@ -33,12 +41,32 @@ class Activity:
             ac.started = True
             self.db.session.commit()
 
-            self.logger("start with Settings: " + str(account.settings))
-            subprocess.Popen(["./start_bot.sh"] +
-                  [ac.settings, ac.username, ac.password, self.get_proxy(ac.username)])
+            self.logger.info("start with Settings: " + str(account.settings))
+            self.start_account(account=account)
             return "success", 200
 
         return "Account not found: %s" % account, 404
+
+    def start_bot(self, timetable):
+        account = self.models.Account.query.filter_by(id=timetable.account_id).first()
+        self.db.session.commit()
+        if not self.is_running(username=account.username):
+            return self.start_account(account=account)
+
+    def start_account(self, account):
+        if account.paid and account.started:
+
+            ip = self.aws.start(user=account.username)
+            self.logger.warning("start_bot for %s at ip: %s" % (account.username, ip))
+
+            sleep(120)
+
+            settings_split_json = json.dumps(str(account.settings).split(" "))
+            print("Settings: %s" % settings_split_json)
+            return subprocess.Popen(["./start_bot.sh"] +
+                                    [ip, settings_split_json, account.username, account.password])
+        else:
+            return "not started Account: %s; paid: %s ; started: %s" % (account, account.paid, account.started)
 
     def stop(self, account):
         ac = self.models.Account.query.filter_by(username=account).first()
@@ -46,7 +74,7 @@ class Activity:
             ac.started = False
             self.db.session.commit()
 
-            self.run_cmd("./stop_bot_sh %s" % account)
+            self.aws.stop(account)
             return "success", 200
 
         return "Account not found: %s" % account, 404

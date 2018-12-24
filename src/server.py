@@ -4,15 +4,15 @@ import models as appmod
 from activity import Activity
 from settings import db, app
 
-activity = Activity(db=db, models=appmod, logger=app.logger.warning)
+activity = Activity(db=db, models=appmod, logger=app.logger)
 
 
 @app.route('/bot/<account>', methods=['GET'])
 def is_running(account):
-    app.logger.warning("GET /bot/%s" % account)
+    app.logger.info("GET /bot/%s" % account)
     try:
         if account:
-            return activity.is_running(account)
+            return str(activity.is_running(account)), 200
         else:
             app.logger.error("GET /bot/%s return: 501" % account)
             return "Not found: %s" % account, 501  # Not Implemented
