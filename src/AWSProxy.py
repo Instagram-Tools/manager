@@ -18,6 +18,7 @@ class AWSProxy:
         if len(not_terminated_instances) >= 1:
             instance = not_terminated_instances[0]
             instance.start()
+            self.logger.warning("for User %s start old Instance: %s" % (user, instance))
 
         else:
             instance = self.ec2.create_instances(
@@ -36,6 +37,7 @@ class AWSProxy:
                     },
                 ],
             )[0]
+            self.logger.warning("for User %s start new Instance: %s" % (user, instance))
 
         return self.wait_for_instance(instance).public_ip_address
 
