@@ -51,8 +51,9 @@ class Activity:
         account = self.models.Account.query.filter_by(id=timetable.account_id).first()
         self.db.session.commit()
         if not self.is_running(username=account.username):
-            print("Start Bot: %s" % account.username)
-            return self.start_account(account=account)
+            print("Start new Thread for Bot: %s" % account.username)
+            thread = threading.Thread(target=self.start_account, args=(account,))
+            return thread.start()
 
     def start_account(self, account):
         if account.paid and account.started:
