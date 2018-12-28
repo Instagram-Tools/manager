@@ -50,8 +50,8 @@ class Manager:
         ).all()
         print(str(tts))
         for tt in tts:
-            thread = threading.Thread(target=self.activity.start_bot, args=(tt,))
-            thread.start()
+            print("account_id: %s" % tt.account_id)
+            print(self.activity.start_bot(tt))
 
     def clear_running(self):
         delete = self.db.session.query(self.models.Running).delete()
