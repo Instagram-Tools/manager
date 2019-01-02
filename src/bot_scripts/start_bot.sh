@@ -5,7 +5,7 @@ sudo service docker start
 sudo docker pull instagramtools/web
 
 # Delete all images
-docker rmi $(sudo docker images -q)
+sudo docker rmi $(sudo docker images -q)
 
 echo "Composition sudo docker stop /selenium"
 sudo docker stop /selenium
