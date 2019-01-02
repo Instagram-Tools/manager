@@ -7,7 +7,11 @@ sudo docker pull instagramtools/web
 # Delete all images
 docker rmi $(sudo docker images -q)
 
+echo "Composition sudo docker stop /selenium"
+sudo docker stop /selenium
+echo "Composition sudo docker rm /selenium"
 sudo docker rm /selenium
+echo "Composition start /selenium"
 sudo docker run -d --net=bridge --name selenium selenium/standalone-chrome:3.141.59
 
 echo Composition Parameters: $@
