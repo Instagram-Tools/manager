@@ -8,11 +8,14 @@ activity = Activity(db=db, models=appmod, logger=app.logger)
 
 
 @app.route('/bot/<account>', methods=['GET'])
-def is_running(account):
+def status(account):
     app.logger.info("GET /bot/%s" % account)
     try:
         if account:
-            return str(activity.is_running(account)), 200
+            result = {"is_running": activity.is_running(account)}
+
+            return jsonify(result)
+
         else:
             app.logger.error("GET /bot/%s return: 501" % account)
             return "Not found: %s" % account, 501  # Not Implemented
