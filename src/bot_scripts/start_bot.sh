@@ -1,5 +1,7 @@
 #!/bin/bash
 
+rm nohup.out
+
 sudo service docker start
 sudo service docker status
 
