@@ -54,6 +54,6 @@ class Manager:
                 print("Session.rollback() Done")
 
     def clear_running(self):
-        delete = self.db.session.query(self.models.Running).delete()
+        delete = self.db.session.query(self.models.Running).delete(synchronize_session='fetch')
         self.db.session.commit()
         print("### clear Entries: %r" % str(delete))
