@@ -32,26 +32,26 @@ class Manager:
             print(exc)
 
         while sleep(60):
+            now = time_in_week(datetime.datetime.now())
+            print(str(now))
+            tts = self.models.TimeTable.query.filter(
+                self.models.TimeTable.start <= now,
+                self.models.TimeTable.end > now,
+                # self.models.TimeTable.end < self.models.TimeTable.start,
+            ).all()
+            print(str(tts))
+            self.loop(tts)
+
+    def loop(self, tts):
+        for tt in tts:
             try:
-                self.loop()
+                print("account_id: %s" % tt.account_id)
+                print(self.activity.start_bot(tt))
             except Exception as exc:
                 print("Exception during loop():")
                 print(exc)
                 self.db.session.rollback()
                 print("Session.rollback() Done")
-
-    def loop(self):
-        now = time_in_week(datetime.datetime.now())
-        print(str(now))
-        tts = self.models.TimeTable.query.filter(
-            self.models.TimeTable.start <= now,
-            self.models.TimeTable.end > now,
-            # self.models.TimeTable.end < self.models.TimeTable.start,
-        ).all()
-        print(str(tts))
-        for tt in tts:
-            print("account_id: %s" % tt.account_id)
-            print(self.activity.start_bot(tt))
 
     def clear_running(self):
         delete = self.db.session.query(self.models.Running).delete()
