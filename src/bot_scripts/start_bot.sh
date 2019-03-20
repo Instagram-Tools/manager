@@ -1,14 +1,15 @@
 #!/bin/bash
 
-rm nohup.out
+echo "" > nohup.out
 
 sudo service docker start
-sudo service docker status
-
-sudo docker pull instagramtools/web
+echo docker status: $(sudo service docker status)
 
 # Delete all images
 sudo docker rmi $(sudo docker images -q)
+
+sudo docker pull instagramtools/web
+sudo docker pull selenium/standalone-chrome:3.141.59
 
 echo "Composition sudo docker stop /selenium"
 sudo docker stop /selenium
