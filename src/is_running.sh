@@ -8,7 +8,7 @@ rm ./tmp
 IP=$1
 shift
 
-CMD="sudo docker ps --format 'table {{.Names}}' -f STATUS=running -f NAME=$1 | grep -w $1"
+CMD="sudo docker ps --format 'table {{.Names}}' -f STATUS=running -f NAME=$1 | grep -w bot"
 # echo CMD: $CMD
 
 ssh -o StrictHostKeychecking=no -tt -i ./id_rsa $P_USER@$IP $CMD
