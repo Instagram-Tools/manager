@@ -32,7 +32,7 @@ class Activity:
         self.logger.info("is_running(%s) l: %s" % (username, l))
 
         for e in l:
-            if username in str(e):
+            if "bot" in str(e):
                 return True
         return False
 
