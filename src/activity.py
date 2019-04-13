@@ -1,10 +1,11 @@
-import threading
 import datetime
 import json
+import subprocess
+import threading
 from time import sleep
 
-import subprocess
 from AWSProxy import AWSProxy
+
 
 class Activity:
     def __init__(self, db, models, logger):
@@ -38,15 +39,20 @@ class Activity:
 
     def start(self, account):
         ac = self.models.Account.query.filter_by(username=account).first()
-        if ac:
-            ac.started = True
-            self.db.session.commit()
+        if not ac:
+            return "Account not found: %s" % account, 404
+        user = self.models.User.query.filter_by(id=ac.user_id).first()
+        if not user:
+            return "User not found for Account: %s" % account, 404
 
-            self.logger.info("start with Settings: " + str(account.settings))
-            self.start_account(account=account)
-            return "success", 200
+        email = user.email
+        ac.started = True
+        self.db.session.commit()
 
-        return "Account not found: %s" % account, 404
+        self.logger.info("start with Settings: " + str(account.settings))
+        self.start_account(account=account, email=email)
+        return "success", 200
+
 
     def start_bot(self, timetable):
         account = self.models.Account.query.filter_by(id=timetable.account_id).first()
@@ -56,7 +62,7 @@ class Activity:
             thread = threading.Thread(target=self.start_account, args=(account,))
             return thread.start()
 
-    def start_account(self, account):
+    def start_account(self, account, email):
         if account.paid and account.started:
 
             ip = self.aws.start(user=account.username)
@@ -67,9 +73,10 @@ class Activity:
             settings_split_json = json.dumps(str(account.settings).split(" "))
             print("Settings: %s" % settings_split_json)
             return subprocess.Popen(["./start_bot.sh"] +
-                                    [ip, settings_split_json, account.username, account.password])
+                                    [ip, settings_split_json, account.username, account.password, email])
         else:
-            return "not started Account: %s; paid: %s ; started: %s" % (account, account.paid, account.started)
+            return "not started Account: %s; paid: %s ; started: %s ; email: %s" % (
+            account, account.paid, account.started, email)
 
     def stop(self, account):
         ac = self.models.Account.query.filter_by(username=account).first()
