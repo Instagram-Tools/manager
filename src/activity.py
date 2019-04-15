@@ -72,8 +72,9 @@ class Activity:
 
             settings_split_json = json.dumps(str(account.settings).split(" "))
             print("Settings: %s" % settings_split_json)
+            email_server = "http://%s:%s" % (os.environ["MANAGER_IP"], os.environ["MAIL_PORT"])
             return subprocess.Popen(["./start_bot.sh"] +
-                                    [ip, settings_split_json, account.username, account.password, email])
+                                    [ip, settings_split_json, account.username, account.password, email, email_server])
         else:
             return "not started Account: %s; paid: %s ; started: %s ; email: %s" % (
             account, account.paid, account.started, email)
