@@ -57,27 +57,25 @@ class Activity:
     def start_bot(self, timetable):
         account = self.models.Account.query.filter_by(id=timetable.account_id).first()
         self.db.session.commit()
+        if not (account.paid and account.started):
+            return "not started Account: %s; paid: %s ; started: %s ; email: %s" % (
+                account, account.paid, account.started, email)
+
         if not self.is_running(username=account.username):
             print("Start new Thread for Bot: %s" % account.username)
             thread = threading.Thread(target=self.start_account, args=(account,))
             return thread.start()
 
     def start_account(self, account, email):
-        if account.paid and account.started:
-
             ip = self.aws.start(user=account.username)
             self.logger.warning("start_bot for %s at ip: %s" % (account.username, ip))
 
             sleep(120)
 
             settings_split_json = json.dumps(str(account.settings).split(" "))
-            print("Settings: %s" % settings_split_json)
             email_server = "http://%s:%s" % (os.environ["MANAGER_IP"], os.environ["MAIL_PORT"])
             return subprocess.Popen(["./start_bot.sh"] +
                                     [ip, settings_split_json, account.username, account.password, email, email_server])
-        else:
-            return "not started Account: %s; paid: %s ; started: %s ; email: %s" % (
-            account, account.paid, account.started, email)
 
     def stop(self, account):
         ac = self.models.Account.query.filter_by(username=account).first()
