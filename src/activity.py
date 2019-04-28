@@ -37,25 +37,29 @@ class Activity:
                 return True
         return False
 
-    def start(self, account):
-        ac = self.models.Account.query.filter_by(username=account).first()
-        if not ac:
-            return "Account not found: %s" % account, 404
-        user = self.models.User.query.filter_by(id=ac.user_id).first()
+    def start(self, username):
+        account = self.models.Account.query.filter_by(username=username).first()
+        if not account:
+            return "Account not found: %s" % username, 404
+        user = self.models.User.query.filter_by(id=account.user_id).first()
         if not user:
-            return "User not found for Account: %s" % account, 404
+            return "User not found for Account: %s" % username, 404
 
         email = user.email
-        ac.started = True
+        account.started = True
         self.db.session.commit()
 
-        self.logger.info("start with Settings: " + str(account.settings))
-        self.start_account(account=account, email=email)
+        self.logger.info("start with Settings: " + str(username.settings))
+        self.start_account(account=username, email=email)
         return "success", 200
-
 
     def start_bot(self, timetable):
         account = self.models.Account.query.filter_by(id=timetable.account_id).first()
+        user = self.models.User.query.filter_by(id=account.user_id).first()
+        if not user:
+            return "User not found for Account: %s" % account, 404
+        email = user.email
+
         self.db.session.commit()
         if not (account.paid and account.started):
             return "not started Account: %s; paid: %s ; started: %s ; email: %s" % (
@@ -63,7 +67,7 @@ class Activity:
 
         if not self.is_running(username=account.username):
             print("Start new Thread for Bot: %s" % account.username)
-            thread = threading.Thread(target=self.start_account, args=(account,))
+            thread = threading.Thread(target=self.start_account, args=(account, email))
             return thread.start()
 
     def start_account(self, account, email):
