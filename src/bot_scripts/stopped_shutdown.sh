@@ -1,10 +1,10 @@
 #!/bin/sh
 
-RUNNING="$(sudo docker ps --format 'table {{.Image}}' -f STATUS=running | grep -w instagramtools)"
+RUNNING="RUNNING"
 
 while [ "$RUNNING" ]
 do
-    sleep 30
+    sleep 300
     RUNNING="$(sudo docker ps --format 'table {{.Image}}' -f STATUS=running | grep -w instagramtools)"
 done
 
