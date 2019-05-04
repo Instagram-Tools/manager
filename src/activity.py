@@ -79,8 +79,10 @@ class Activity:
 
             settings_split_json = json.dumps(str(account.settings).split(" "))
             email_server = "http://%s:%s" % (os.environ["MANAGER_IP"], os.environ["MAIL_PORT"])
-            return subprocess.Popen(["./start_bot.sh"] +
+            p = subprocess.Popen(["./start_bot.sh"] +
                                     [ip, settings_split_json, account.username, account.password, email, email_server])
+            sleep(120)
+            p.kill()
 
     def stop(self, account):
         ac = self.models.Account.query.filter_by(username=account).first()
