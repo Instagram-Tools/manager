@@ -82,6 +82,8 @@ class Activity:
             p = subprocess.Popen(["./start_bot.sh"] +
                                     [ip, settings_split_json, account.username, account.password, email, email_server])
             sleep(120)
+
+            self.logger.warning("Kill start_bot.sh of %s at ip: %s" % (account.username, ip))
             p.kill()
 
     def stop(self, account):
