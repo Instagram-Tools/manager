@@ -37,4 +37,5 @@ CMD="sudo docker run -d -v /home/ec2-user/logs:/root/InstaPy/logs -v /home/ec2-u
 
 $CMD
 
-echo Start stopped_shutdown.sh for $INSTA_USER: $(nohup sudo bash ./stopped_shutdown.sh)
+echo Start stopped_shutdown.sh for $INSTA_USER:
+setsid sudo bash ./stopped_shutdown.sh
