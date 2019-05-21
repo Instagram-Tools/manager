@@ -7,7 +7,7 @@ from settings import db, app
 activity = Activity(db=db, models=appmod, logger=app.logger)
 
 
-@app.route('/bot/<account>', methods=['GET'])
+@app.route('/bot/running/<account>', methods=['GET'])
 def is_running(account):
     app.logger.info("GET /bot/%s" % account)
     try:
