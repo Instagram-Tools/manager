@@ -41,5 +41,17 @@ def start(account):
         return str(exc), 500
 
 
+@app.route('/bot/login/', methods=['POST'])
+def try_login():
+    data = json.loads(request.data)
+    app.logger.warning("POST /bot/login: %s" % data)
+    try:
+        return activity.start_try_login(username=data.get("username", "").lower(),
+                                        password=data.get('password'), email=data.get('email'))
+    except Exception as exc:
+        app.logger.error("POST /bot/login Exception: %s" % (exc))
+        return str(exc), 500
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8765)
