@@ -87,7 +87,7 @@ class Activity:
             p.kill()
 
     def start_try_login(self, username, password, email):
-            ip = self.aws.start(user=account.username)
+            ip = self.aws.start(user=username)
             self.logger.warning("start_try_login for %s at ip: %s" % (username, ip))
 
             sleep(120)
