@@ -5,8 +5,7 @@ shift
 
 INSTA_USER=$1
 
-# echo Manager JSON: $JSON
-# echo Manager Parameters: $@
+echo Manager Parameters: $@
 
 CMD="bash start_bot.sh '$JSON' $@"
 # echo Manager CMD: $CMD

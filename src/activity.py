@@ -100,6 +100,8 @@ class Activity:
             self.logger.warning("Kill login_bot.sh of %s at ip: %s" % (username, ip))
             p.kill()
 
+            return "success start_try_login for %s at ip: %s"
+
     def stop(self, account):
         ac = self.models.Account.query.filter_by(username=account).first()
         if ac:
