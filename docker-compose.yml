@@ -42,7 +42,7 @@ services:
     volumes:
     - ./logs:/code/logs
   selenium:
-    image: selenium/standalone-chrome
+    image: selenium/standalone-chrome:3.7.1
     ports:
     - 5900:5900
 

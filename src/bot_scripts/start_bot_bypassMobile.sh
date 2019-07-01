@@ -13,7 +13,7 @@ sudo docker stop /selenium
 echo "Composition sudo docker rm /selenium"
 sudo docker rm /selenium
 echo "Composition start /selenium"
-sudo docker run -d --net=bridge --name selenium selenium/standalone-chrome:3.141.59
+sudo docker run -d --net=bridge --name selenium selenium/standalone-chrome:3.7.1
 
 echo Composition Parameters: $@
 INSTA_USER=$2
