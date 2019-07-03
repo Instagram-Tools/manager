@@ -48,7 +48,9 @@ def try_login():
     app.logger.warning("POST /bot/login: %s" % data)
     try:
         return activity.start_try_login(username=data.get("username", "").lower(),
-                                        password=data.get('password'), email=data.get('email'))
+                                        password=data.get('password'),
+                                        email=data.get('email'),
+                                        sec_code=data.get('sec_code'))
     except Exception as exc:
         app.logger.error("POST /bot/login Exception: %s" % (exc))
         return str(exc), 500

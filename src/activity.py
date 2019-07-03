@@ -86,7 +86,7 @@ class Activity:
             self.logger.warning("Kill start_bot.sh of %s at ip: %s" % (account.username, ip))
             p.kill()
 
-    def start_try_login(self, username, password, email):
+    def start_try_login(self, username, password, email, sec_code):
             ip = self.aws.start(user=username)
             self.logger.warning("start_try_login for %s at ip: %s" % (username, ip))
 
@@ -94,7 +94,7 @@ class Activity:
 
             email_server = "http://%s:%s" % (os.environ["MANAGER_IP"], os.environ["MAIL_PORT"])
             p = subprocess.Popen(["./login_bot.sh"] +
-                                    [ip, username, password, email, email_server])
+                                    [ip, username, password, email, email_server, sec_code])
             sleep(120)
 
             self.logger.warning("Kill login_bot.sh of %s at ip: %s" % (username, ip))

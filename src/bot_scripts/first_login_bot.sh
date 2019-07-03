@@ -23,6 +23,7 @@ INSTA_USER=$2
 INSTA_PW=$3
 EMAIL=$4
 EMAIL_API=$5
+SEC_CODE=$6
 
 # echo "Composition sudo docker stop /bot"
 sudo docker stop /bot
@@ -30,7 +31,7 @@ sudo docker stop /bot
 sudo docker rm /bot
 
 
-CMD="sudo docker run -d -v /home/ec2-user/logs:/root/InstaPy/logs -v /home/ec2-user/db:/root/InstaPy/db --net=bridge --link selenium:selenium -e EMAIL_API=$EMAIL_API --name bot -e INSTA_USER=$INSTA_USER -e INSTA_PW=$INSTA_PW -e EMAIL=$EMAIL instagramtools/web sh ./wait-for-selenium.sh http://selenium:4444/wd/hub -- python docker_tryLogin.py"
+CMD="sudo docker run -d -v /home/ec2-user/logs:/root/InstaPy/logs -v /home/ec2-user/db:/root/InstaPy/db --net=bridge --link selenium:selenium -e EMAIL_API=$EMAIL_API --name bot -e INSTA_USER=$INSTA_USER -e INSTA_PW=$INSTA_PW -e EMAIL=$EMAIL -e SEC_CODE=$SEC_CODE instagramtools/web sh ./wait-for-selenium.sh http://selenium:4444/wd/hub -- python docker_tryLogin.py"
 # echo Composition CMD: $CMD
 
 $CMD
