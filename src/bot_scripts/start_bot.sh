@@ -12,9 +12,9 @@ sudo docker pull instagramtools/web
 sudo docker pull selenium/standalone-chrome:3.7.1
 
 # echo "Composition sudo docker stop /selenium"
-sudo docker stop /selenium
+#sudo docker stop /selenium
 # echo "Composition sudo docker rm /selenium"
-sudo docker rm /selenium
+#sudo docker rm /selenium
 # echo "Composition start /selenium"
 sudo docker run -d --net=bridge --name selenium selenium/standalone-chrome:3.7.1
 
@@ -25,9 +25,9 @@ EMAIL=$4
 EMAIL_API=$5
 
 # echo "Composition sudo docker stop /bot"
-sudo docker stop /bot
+#sudo docker stop /bot
 # echo "Composition sudo docker rm /bot"
-sudo docker rm /bot
+#sudo docker rm /bot
 
 SETTINGS=${1//' '/''}
 
