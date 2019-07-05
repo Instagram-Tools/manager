@@ -20,11 +20,11 @@ sudo docker run -d --net=bridge --name selenium selenium/standalone-chrome:3.7.1
 sudo docker start /selenium
 
 # echo Composition Parameters: $@
-INSTA_USER=$2
-INSTA_PW=$3
-EMAIL=$4
-EMAIL_API=$5
-SEC_CODE=$6
+INSTA_USER=$1
+INSTA_PW=$2
+EMAIL=$3
+EMAIL_API=$4
+SEC_CODE=$5
 
 # echo "Composition sudo docker stop /bot_login"
 sudo docker stop /bot_login
