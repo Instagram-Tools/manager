@@ -17,6 +17,7 @@ sudo docker pull selenium/standalone-chrome:3.7.1
 #sudo docker rm /selenium
 # echo "Composition start /selenium"
 sudo docker run -d --net=bridge --name selenium selenium/standalone-chrome:3.7.1
+sudo docker start /selenium
 
 # echo Composition Parameters: $@
 INSTA_USER=$2
@@ -25,9 +26,9 @@ EMAIL=$4
 EMAIL_API=$5
 
 # echo "Composition sudo docker stop /bot"
-#sudo docker stop /bot
+sudo docker stop /bot
 # echo "Composition sudo docker rm /bot"
-#sudo docker rm /bot
+sudo docker rm /bot
 
 SETTINGS=${1//' '/''}
 
