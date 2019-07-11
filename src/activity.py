@@ -26,7 +26,7 @@ class Activity:
         if not ip:
             return False
 
-        out, err, errcode = self.run_cmd("./is_running.sh %s %s" % (ip, username))
+        out, err, errcode = self.run_cmd("./is_running.sh %s %s" % ip)
         self.logger.warning("is_running(%s); err: %s; errcode: %s; out: %s" % (username, err, errcode, out))
         s = out.decode('utf_8')
         self.logger.info("is_running(%s); s: %s" % (username, s))
