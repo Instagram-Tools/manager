@@ -11,7 +11,6 @@ from AWSProxy import AWSProxy
 class Activity:
     def __init__(self, db, models, logger):
         """
-
         :type db: flask_sqlalchemy.SQLAlchemy
         :type models: models
         """
