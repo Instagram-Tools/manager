@@ -36,7 +36,7 @@ class Account(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     credit = db.Column(db.Integer, default=0)
 
-    subscription = db.Column(db.String(10), unique=True)
+    subscription = db.Column(db.String(80), unique=True)
     paid = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
