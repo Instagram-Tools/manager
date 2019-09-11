@@ -3,15 +3,17 @@ import os
 from time import sleep
 
 IMAGE_ID = os.environ.get('IMAGE_ID')
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 
 
 class AWSProxy:
     def __init__(self, logger):
         self.logger = logger
-        self.ec2 = boto3.resource('ec2', aws_access_key_id=os.environ.get('AWS_ACCESS_KEY_ID'),
-                                  aws_secret_access_key=os.environ.get('AWS_SECRET_ACCESS_KEY'))
-        self.client = boto3.client('ec2', aws_access_key_id=os.environ.get('AWS_ACCESS_KEY_ID'),
-                                   aws_secret_access_key=os.environ.get('AWS_SECRET_ACCESS_KEY'))
+        self.ec2 = boto3.resource('ec2', aws_access_key_id=AWS_ACCESS_KEY_ID,
+                                  aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
+        self.client = boto3.client('ec2', aws_access_key_id=AWS_ACCESS_KEY_ID,
+                                   aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
 
     def start(self, user):
         not_terminated_instances = list(filter(lambda i: i.state['Name'] != 'terminated', self.get_user_instance_list(user=user)))
