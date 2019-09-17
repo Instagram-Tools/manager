@@ -3,8 +3,9 @@ import os
 from time import sleep
 
 IMAGE_ID = os.environ.get('IMAGE_ID')
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', 'TEST')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+INSTANCE_TYPE = os.environ.get('INSTANCE_TYPE', 't2.micro')
 
 
 class AWSProxy:
@@ -24,7 +25,7 @@ class AWSProxy:
 
         else:
             instance = self.ec2.create_instances(
-                ImageId=IMAGE_ID, InstanceType='t2.micro',
+                ImageId=IMAGE_ID, InstanceType=INSTANCE_TYPE,
                 KeyName='bot', SecurityGroups=['bot'],
                 MaxCount=1, MinCount=1,
                 TagSpecifications=[
