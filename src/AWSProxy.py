@@ -16,6 +16,9 @@ class AWSProxy:
         self.client = boto3.client('ec2', aws_access_key_id=AWS_ACCESS_KEY_ID,
                                    aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
 
+        if AWS_ACCESS_KEY_ID == "TEST":
+            logger.warning("VERSION 1")
+
     def start(self, user):
         not_terminated_instances = list(filter(lambda i: i.state['Name'] != 'terminated', self.get_user_instance_list(user=user)))
         if len(not_terminated_instances) >= 1:
@@ -75,6 +78,10 @@ class AWSProxy:
         return list(filter(lambda i: d in i.tags, self.get_instances()))
 
     def get_instances(self):
+        if AWS_ACCESS_KEY_ID == "TEST":
+            user = "TEST"
+            return [{'tags': [{'Key': 'Name', 'Value': user}]}]
+
         response = self.client.describe_instances(Filters=[
             {
                 'Name': 'image-id',

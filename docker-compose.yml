@@ -4,6 +4,8 @@ services:
     command: sh dev.sh 8765
     build: .
     image: instagramtools/manager
+    volumes:
+      - ./src:/app
     ports:
       - 8765:8765
     depends_on:
@@ -19,13 +21,73 @@ services:
       - DB_PASS=postgres
       - DB_SERVICE=postgres
       - DB_PORT=5432
+#    env_file:
+#      - .env/.bot-manager.env
+
+  nginx:
+    image: instagramtools/user-interface
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - DEBUG=off
+      - APP_API_PLACEHOLDER=/api
+      - APP_API_GATEWAY=http://api:8000
+      - APP_BOT_PLACEHOLDER=/bot
+      - APP_BOT_GATEWAY=http://manager:8765
+      - PAYMENT_PLACEHOLDER=/pay
+      - PAYMENT_GATEWAY=http://payment-manager:7000
+    depends_on:
+      - api
+      - payment-manager
+      - manager
+    links:
+      - api:api
+      - payment-manager:payment-manager
+      - manager:manager
+  api:
+    image: instagramtools/api
+    depends_on:
+      - postgres
+      - manager
+    links:
+      - postgres:postgres
+      - manager:manager
+    environment:
+      - DEBUG=False
+      - DB_SERVICE=postgres
+      - DB_PORT=5432
+      - APP_BOT_GATEWAY=http://manager:8765
+      - DB_NAME=postgres
+      - DB_USER=postgres
+      - DB_PASS=postgres
+      - SECRET_KEY=SECRET_KEY
+      - SECURITY_PASSWORD_SALT=SECURITY_PASSWORD_SALT
     env_file:
-      - .env/.bot-manager.env
+      - .env/.mail.env
+  payment-manager:
+    image: instagramtools/payment-manager
+    depends_on:
+      - postgres
+      - api
+    links:
+      - postgres:postgres
+      - api:api
+    ports:
+      - "7000:7000"
+    environment:
+      - DEBUG=False
+      - DB_SERVICE=postgres
+      - DB_PORT=5432
+      - DB_NAME=postgres
+      - DB_USER=postgres
+      - DB_PASS=postgres
+      - STRIPE_SECRET_KEY=TEST
 
   postgres:
     image: postgres:latest
     volumes:
-      - db_data:/var/lib/postgresql
+      - pgs_data:/var/lib/postgresql
     ports:
       - 5432:5432
     environment:
@@ -47,5 +109,5 @@ services:
     - 5900:5900
 
 volumes:
-  db_data:
+  pgs_data:
   log_data:
