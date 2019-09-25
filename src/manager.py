@@ -2,7 +2,8 @@ import threading
 import datetime
 import requests
 
-from time_util import sleep, time_in_week
+from time_util import time_in_week
+from time import sleep
 
 from activity import Activity
 import logging
@@ -31,24 +32,25 @@ class Manager:
             print("Exception during clear_running():")
             print(exc)
 
-        while sleep(60):
+        self.loop()
+
+    def loop(self):
+        while True:
             now = time_in_week(datetime.datetime.now())
             tts = self.models.TimeTable.query.filter(
                 self.models.TimeTable.start <= now,
                 self.models.TimeTable.end > now,
                 # self.models.TimeTable.end < self.models.TimeTable.start,
             ).all()
-            self.loop(tts)
-
-    def loop(self, tts):
-        for tt in tts:
-            try:
-                self.activity.start_bot(tt)
-            except Exception as exc:
-                print("Exception during loop():")
-                print(exc)
-                self.db.session.rollback()
-                print("Session.rollback() Done")
+            for tt in tts:
+                try:
+                    self.activity.start_bot(tt)
+                except Exception as exc:
+                    print("Exception during loop():")
+                    print(exc)
+                    self.db.session.rollback()
+                    print("Session.rollback() Done")
+            sleep(60)
 
     def clear_running(self):
         delete = self.db.session.query(self.models.Running).delete(synchronize_session='fetch')
