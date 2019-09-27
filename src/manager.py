@@ -8,6 +8,7 @@ from time import sleep
 from activity import Activity
 import logging
 
+
 class Manager:
     def __init__(self, db, models):
         """
@@ -31,26 +32,25 @@ class Manager:
         except Exception as exc:
             print("Exception during clear_running():")
             print(exc)
-
-        self.loop()
+        while True:
+            self.loop()
 
     def loop(self):
-        while True:
-            now = time_in_week(datetime.datetime.now())
-            tts = self.models.TimeTable.query.filter(
-                self.models.TimeTable.start <= now,
-                self.models.TimeTable.end > now,
-                # self.models.TimeTable.end < self.models.TimeTable.start,
-            ).all()
-            for tt in tts:
-                try:
-                    self.activity.start_bot(tt)
-                except Exception as exc:
-                    print("Exception during loop():")
-                    print(exc)
-                    self.db.session.rollback()
-                    print("Session.rollback() Done")
-            sleep(60)
+        now = time_in_week(datetime.datetime.now())
+        tts = self.models.TimeTable.query.filter(
+            self.models.TimeTable.start <= now,
+            self.models.TimeTable.end > now,
+            # self.models.TimeTable.end < self.models.TimeTable.start,
+        ).all()
+        for tt in tts:
+            try:
+                self.activity.start_bot(tt)
+            except Exception as exc:
+                print("Exception during loop():")
+                print(exc)
+                self.db.session.rollback()
+                print("Session.rollback() Done")
+        sleep(60)
 
     def clear_running(self):
         delete = self.db.session.query(self.models.Running).delete(synchronize_session='fetch')

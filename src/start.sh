@@ -8,4 +8,4 @@ rm ./tmp
 echo sleep 30
 sleep 30
 
-/usr/local/bin/gunicorn --workers=10 --timeout 600 -b :$1 server:app & python start.py
+/usr/local/bin/gunicorn --workers=10 --timeout 600 -b :$1 server:app
