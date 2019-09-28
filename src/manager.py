@@ -50,6 +50,7 @@ class Manager:
                 print(exc)
                 self.db.session.rollback()
                 print("Session.rollback() Done")
+        print("run sleep(60)")
         sleep(60)
 
     def clear_running(self):
