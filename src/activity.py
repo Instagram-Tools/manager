@@ -83,12 +83,10 @@ class Activity:
 
             settings_split_json = json.dumps(str(account.settings).split(" "))
             email_server = "http://%s:%s" % (os.environ["MANAGER_IP"], os.environ["MAIL_PORT"])
-            p = subprocess.Popen(["./start_bot.sh"] +
-                                    [ip, settings_split_json, account.username, account.password, email, email_server])
-            sleep(120)
-
-            self.logger.warning("Kill start_bot.sh of %s at ip: %s" % (account.username, ip))
-            p.kill()
+            subprocess.check_call(
+                ("./start_bot.sh", ip, settings_split_json, account.username, account.password, email, email_server),
+                stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+            self.logger.warning("Finished start_bot.sh of %s at ip: %s" % (account.username, ip))
 
     def start_try_login(self, username, password, email, sec_code):
             ip = self.aws.start(user=username)
