@@ -42,9 +42,11 @@ class Manager:
             self.models.TimeTable.end > now,
             # self.models.TimeTable.end < self.models.TimeTable.start,
         ).all()
-        for tt in tts:
+        ids = list(map(lambda tt: tt.account_id, tts))
+        print("ids: %s" % ids)
+        for id in ids:
             try:
-                self.activity.start_bot(tt)
+                self.activity.start_bot(id)
             except Exception as exc:
                 print("Exception during loop():")
                 print(exc)

@@ -53,10 +53,10 @@ class Activity:
         self.start_account(account=username, email=email)
         return "success", 200
 
-    def start_bot(self, timetable):
-        account = self.models.Account.query.filter_by(id=timetable.account_id).first()
+    def start_bot(self, account_id):
+        account = self.models.Account.query.filter_by(id=account_id).first()
         if not account:
-            return "Account not found for timetable: %s" % timetable, 404
+            return "Account not found for account_id: %s" % account_id, 404
 
         user = self.models.User.query.filter_by(id=account.user_id).first()
         if not user:
