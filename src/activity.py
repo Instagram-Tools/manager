@@ -56,15 +56,19 @@ class Activity:
     def start_bot(self, account_id):
         account = self.models.Account.query.filter_by(id=account_id).first()
         if not account:
+            print("Account not found for account_id: %s" % account_id)
             return "Account not found for account_id: %s" % account_id, 404
 
         user = self.models.User.query.filter_by(id=account.user_id).first()
         if not user:
+            print("User not found for Account: %s" % account)
             return "User not found for Account: %s" % account, 404
         email = user.email
 
         self.db.session.commit()
         if not (account.paid and account.started):
+            print("not started Account: %s; paid: %s ; started: %s ; email: %s" % (
+                account, account.paid, account.started, email))
             return "not started Account: %s; paid: %s ; started: %s ; email: %s" % (
                 account, account.paid, account.started, email)
 
@@ -102,7 +106,8 @@ class Activity:
             self.logger.warning("Kill login_bot.sh of %s at ip: %s" % (username, ip))
             p.kill()
 
-            return "success start_try_login for %s at ip: %s"
+            print("success start_try_login for %s at ip: %s" % (username, ip))
+            return "success start_try_login for %s at ip: %s" % (username, ip)
 
     def stop(self, account):
         ac = self.models.Account.query.filter_by(username=account).first()
