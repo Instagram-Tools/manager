@@ -1,7 +1,8 @@
 version: "3"
 services:
   manager:
-    command: sh dev.sh 8765
+    command: python start.py
+    restart: unless-stopped
     build: .
     image: instagramtools/manager
     volumes:

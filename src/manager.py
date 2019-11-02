@@ -34,6 +34,8 @@ class Manager:
             print(exc)
         while True:
             self.loop()
+            print("run sleep(600)")
+            sleep(600)
 
     def loop(self):
         now = time_in_week(datetime.datetime.now())
@@ -52,8 +54,6 @@ class Manager:
                 print(exc)
                 self.db.session.rollback()
                 print("Session.rollback() Done")
-        print("run sleep(60)")
-        sleep(60)
 
     def clear_running(self):
         delete = self.db.session.query(self.models.Running).delete(synchronize_session='fetch')
