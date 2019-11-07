@@ -1,6 +1,6 @@
 version: "3"
 services:
-  manager:
+  starter:
     command: python start.py
     restart: unless-stopped
     build: .
@@ -22,6 +22,7 @@ services:
       - DB_PASS=postgres
       - DB_SERVICE=postgres
       - DB_PORT=5432
+      - MANAGER_IP=localhost
 #    env_file:
 #      - .env/.bot-manager.env
 

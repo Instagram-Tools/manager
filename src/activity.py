@@ -86,9 +86,9 @@ class Activity:
             sleep(120)
 
             settings_split_json = json.dumps(str(account.settings).split(" "))
-            email_server = "http://%s:%s" % (os.environ["MANAGER_IP"], os.environ["MAIL_PORT"])
+            api = "http://%s:%s" % (os.environ["MANAGER_IP"], os.environ["API_PORT"])
             subprocess.check_call(
-                ("./start_bot.sh", ip, settings_split_json, account.username, account.password, email, email_server),
+                ("./start_bot.sh", ip, settings_split_json, account.username, account.password, email, api),
                 stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
             self.logger.warning("Finished start_bot.sh of %s at ip: %s" % (account.username, ip))
 
@@ -98,9 +98,9 @@ class Activity:
 
             sleep(120)
 
-            email_server = "http://%s:%s" % (os.environ["MANAGER_IP"], os.environ["MAIL_PORT"])
+            api = "http://%s:%s" % (os.environ["MANAGER_IP"], os.environ["API_PORT"])
             p = subprocess.Popen(["./login_bot.sh"] +
-                                    [ip, username, password, email, email_server, sec_code])
+                                    [ip, username, password, email, api, sec_code])
             sleep(120)
 
             self.logger.warning("Kill login_bot.sh of %s at ip: %s" % (username, ip))
