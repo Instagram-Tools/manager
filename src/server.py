@@ -28,7 +28,7 @@ def stop(account):
     try:
         return activity.stop(account)
     except Exception as exc:
-        app.logger.error("GET /bot/%s Exception: %s" % (account, exc))
+        app.logger.error("GET /bot/stop/%s Exception: %s" % (account, exc))
         return str(exc), 500
 
 
@@ -38,7 +38,7 @@ def start(account):
     try:
         return activity.start(account)
     except Exception as exc:
-        app.logger.error("GET /bot/%s Exception: %s" % (account, exc))
+        app.logger.error("GET /bot/start/%s Exception: %s" % (account, exc))
         return str(exc), 500
 
 
