@@ -9,4 +9,4 @@ do
 done
 
 echo SHUTDOWN because Bot stopped: $1
-/sbin/shutdown -h now
+sudo /sbin/shutdown -h now
