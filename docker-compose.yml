@@ -49,6 +49,8 @@ services:
       - manager:manager
   api:
     image: instagramtools/api
+    ports:
+      - "8000:8000"
     depends_on:
       - postgres
       - manager
@@ -60,6 +62,25 @@ services:
       - DB_SERVICE=postgres
       - DB_PORT=5432
       - APP_BOT_GATEWAY=http://manager:8765
+      - DB_NAME=postgres
+      - DB_USER=postgres
+      - DB_PASS=postgres
+      - SECRET_KEY=SECRET_KEY
+      - SECURITY_PASSWORD_SALT=SECURITY_PASSWORD_SALT
+    env_file:
+      - .env/.mail.env
+  manager:
+    image: instagramtools/manager
+    command: sh start.sh 8765
+    depends_on:
+      - postgres
+    links:
+      - postgres:postgres
+    environment:
+      - DEBUG=False
+      - DB_SERVICE=postgres
+      - DB_PORT=5432
+      - P_USER=ec2-user
       - DB_NAME=postgres
       - DB_USER=postgres
       - DB_PASS=postgres
