@@ -73,11 +73,11 @@ class Activity:
                 account, account.paid, account.started, email)
 
         if not self.is_running(username=account.username):
-            print("Start new Thread for Bot: %s" % account.username)
-            process = multiprocessing.Process(target=self.start_account, args=(account, email))
-            return process.start()
-            # print("Start Bot: %s" % account.username)
-            # self.start_account(account, email)
+            # print("Start new Thread for Bot: %s" % account.username)
+            # process = multiprocessing.Process(target=self.start_account, args=(account, email))
+            # return process.start()
+            print("Start Bot: %s" % account.username)
+            self.start_account(account, email)
 
     def start_account(self, account, email):
             ip = self.aws.start(user=account.username)
